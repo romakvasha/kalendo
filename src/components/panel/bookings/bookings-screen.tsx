@@ -48,7 +48,7 @@ export function BookingsScreen() {
 }
 
 function Bookings({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const [view, setView] = useState<BookingsView>("pending");
@@ -130,7 +130,10 @@ function Bookings({ tenant }: { tenant: Tenant }) {
           </span>
         </div>
         <p className="font-display mt-1 text-[24px] leading-tight text-ink">
-          {t("panel.bookings.visitsToday", { count: today.length })}
+          {t("panel.bookings.visitsToday", {
+            count: today.length,
+            visits: tn(today.length, "plurals.visits"),
+          })}
         </p>
       </section>
 

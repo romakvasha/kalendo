@@ -1,4 +1,4 @@
-import { minutesOf, TODAY, timeOf, weekdayOf } from "@/lib/format";
+import { addDays, minutesOf, TODAY, timeOf, weekdayOf } from "@/lib/format";
 import { clamp, sum } from "@/lib/utils";
 import type {
   Appointment,
@@ -502,6 +502,34 @@ export function slotsFor(
   }
 
   return slots;
+}
+
+/**
+ * The first day from `fromISO` that still has a bookable slot, or `null`
+ * when the whole window is full. Days the tenant is closed cost nothing —
+ * `openingFor` rejects them before any slot is built — and the walk stops
+ * at the first hit.
+ */
+export function firstAvailableDate(
+  state: DataState,
+  tenantId: string,
+  serviceIds: string[],
+  staffId: string | null,
+  fromISO: string,
+  maxDays = 30,
+): string | null {
+  const tenant = getTenant(state, tenantId);
+  if (!tenant) return null;
+
+  for (let offset = 0; offset < maxDays; offset += 1) {
+    const date = addDays(fromISO, offset);
+    if (!openingFor(tenant, date)) continue;
+    const open = slotsFor(state, tenantId, serviceIds, staffId, date).some(
+      (slot) => slot.available,
+    );
+    if (open) return date;
+  }
+  return null;
 }
 
 export interface FreeWindow {

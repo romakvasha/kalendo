@@ -22,7 +22,7 @@ export function ReviewsSection({
   limit = 3,
   className,
 }: ReviewsSectionProps) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const shown = reviews.slice(0, limit);
 
   return (
@@ -36,7 +36,10 @@ export function ReviewsSection({
             {number(tenant.rating, locale)}
           </p>
           <p className="text-[12px] text-muted">
-            {t("company.reviewsCount", { count: tenant.reviewCount })}
+            {t("company.reviewsCount", {
+              count: tenant.reviewCount,
+              reviews: tn(tenant.reviewCount, "plurals.reviews"),
+            })}
           </p>
         </div>
       </div>
@@ -95,7 +98,7 @@ export function ReviewsSection({
 
 /** Compact aggregate used above the fold on phones. */
 export function RatingSummary({ tenant }: { tenant: Tenant }) {
-  const { t, locale } = useI18n();
+  const { t, tn, locale } = useI18n();
   return (
     <span className="inline-flex items-center gap-2">
       <Rating value={tenant.rating} size="sm" />
@@ -103,7 +106,10 @@ export function RatingSummary({ tenant }: { tenant: Tenant }) {
         {number(tenant.rating, locale)}
       </span>
       <span className="text-[13px] text-muted">
-        {t("company.reviewsCount", { count: tenant.reviewCount })}
+        {t("company.reviewsCount", {
+          count: tenant.reviewCount,
+          reviews: tn(tenant.reviewCount, "plurals.reviews"),
+        })}
       </span>
     </span>
   );

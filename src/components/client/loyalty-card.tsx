@@ -22,7 +22,7 @@ export function LoyaltyCard({
   variant = "ink",
   className,
 }: LoyaltyCardProps) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const ink = variant === "ink";
   const missing = Math.max(0, rewardAt - points);
   const reward = tl(tenant.loyalty?.rewardLabel);
@@ -76,7 +76,11 @@ export function LoyaltyCard({
           ink ? "text-paper/70" : "text-muted",
         )}
       >
-        {t("visits.pointsToReward", { n: missing, reward })}
+        {t("visits.pointsToReward", {
+          n: missing,
+          points: tn(missing, "plurals.points"),
+          reward,
+        })}
       </p>
     </section>
   );

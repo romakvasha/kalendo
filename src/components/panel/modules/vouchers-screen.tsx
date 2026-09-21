@@ -53,7 +53,7 @@ export function VouchersScreen() {
 /* ------------------------------------------------------------------ */
 
 function Vouchers({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const vouchers = useMemo(
@@ -134,7 +134,9 @@ function Vouchers({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.vouchers.subtitle", {
           active: active.length,
+          vouchersWord: tn(active.length, "plurals.vouchersActive"),
           passes: passes.length,
+          passesWord: tn(passes.length, "plurals.passes"),
         })}
         action={
           <Button iconLeft={Plus} onClick={() => setSelling(true)}>

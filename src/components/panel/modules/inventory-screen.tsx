@@ -47,7 +47,7 @@ export function InventoryScreen() {
 /* ------------------------------------------------------------------ */
 
 function Inventory({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const products = useMemo(
@@ -170,6 +170,7 @@ function Inventory({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.inventory.subtitle", {
           count: products.length,
+          items: tn(products.length, "plurals.items"),
           value: money(totalValue, locale),
         })}
         action={
@@ -194,7 +195,10 @@ function Inventory({ tenant }: { tenant: Tenant }) {
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-[15px] font-semibold text-ink">
-                {t("panel.inventory.lowStockTitle", { count: low.length })}
+                {t("panel.inventory.lowStockTitle", {
+                  count: low.length,
+                  products: tn(low.length, "plurals.productsLow"),
+                })}
               </p>
               <p className="mt-0.5 text-[13px] leading-5 text-muted">
                 {low

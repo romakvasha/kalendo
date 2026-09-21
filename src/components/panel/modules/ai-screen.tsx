@@ -336,7 +336,7 @@ function AssistantAnswer({
   tenant,
   locale,
 }: AssistantAnswerProps) {
-  const { t, tl } = useI18n();
+  const { t, tn, tl } = useI18n();
 
   if (answer === "quiet") {
     const demand = hourDemand(state, tenant.id);
@@ -355,7 +355,9 @@ function AssistantAnswer({
         text={t("panel.ai.answers.quiet", {
           hours: weakest.map((item) => item.label).join(", "),
           visits: sum(weakest.map((item) => item.visits)),
+          visitsWord: tn(sum(weakest.map((item) => item.visits)), "plurals.visits"),
           gap,
+          gapWord: tn(gap, "plurals.visitsGen"),
         })}
       >
         <BarChart
@@ -390,6 +392,7 @@ function AssistantAnswer({
       <AnswerShell
         text={t("panel.ai.answers.inactive", {
           count: all.length,
+          clients: tn(all.length, "plurals.clientsAbsent"),
           value: money(value, locale),
         })}
       >
@@ -456,6 +459,7 @@ function AssistantAnswer({
                 revenue: money(top.revenue, locale),
                 share: Math.round((top.revenue / total) * 100),
                 visits: top.visits,
+                visitsWord: tn(top.visits, "plurals.visitsAt"),
               })
             : t("panel.ai.answers.noData")
         }

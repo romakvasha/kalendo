@@ -102,7 +102,7 @@ function draftOf(service: Service): ServiceDraft {
 }
 
 function Services({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const categories = useMemo(
@@ -182,7 +182,9 @@ function Services({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.services.subtitle", {
           services: services.length,
+          servicesWord: tn(services.length, "plurals.services"),
           categories: categories.length,
+          categoriesWord: tn(categories.length, "plurals.categoriesIn"),
         })}
         action={
           <>

@@ -1,8 +1,8 @@
 import { Cake, Sparkles, Star, TriangleAlert, UserCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { clientsOf, type DataState } from "@/lib/data";
-import { TODAY, dayMonth, monthShort, monthYear } from "@/lib/format";
+import { NOW_ISO, clientsOf, type DataState } from "@/lib/data";
+import { TODAY, dayMonth, monthShort, monthYearGenitive } from "@/lib/format";
 import { hashRatio } from "@/lib/utils";
 import type {
   Appointment,
@@ -82,16 +82,38 @@ export function matchesQuery(client: Client, query: string): boolean {
 /* Rows                                                                */
 /* ------------------------------------------------------------------ */
 
+/**
+ * A booking counts as a visit once it has actually taken place and was not
+ * called off — waiting for the "done" flag hid every past appointment the
+ * salon had not ticked off yet.
+ */
+export function hasHappened(appointment: Appointment): boolean {
+  if (appointment.status === "done") return true;
+  if (appointment.status === "cancelled" || appointment.status === "no-show") {
+    return false;
+  }
+  return appointment.start < NOW_ISO;
+}
+
+/**
+ * A client carries a lifetime `visitCount`, but only the demo window exists as
+ * appointment rows — so someone who joined earlier can honestly have visits
+ * that nothing here can list. Someone who joined today cannot.
+ */
+export function hasEarlierVisits(client: Client): boolean {
+  return client.visitCount > 0 && client.since < TODAY;
+}
+
 export interface ClientRow {
   client: Client;
-  /** ISO datetime of the most recent completed visit, when there is one. */
+  /** ISO datetime of the most recent visit on record, when there is one. */
   lastVisit?: string;
 }
 
 export function clientRows(state: DataState, tenantId: string): ClientRow[] {
   const latest = new Map<string, string>();
   for (const appointment of state.appointments) {
-    if (appointment.tenantId !== tenantId || appointment.status !== "done") {
+    if (appointment.tenantId !== tenantId || !hasHappened(appointment)) {
       continue;
     }
     const current = latest.get(appointment.clientId);
@@ -148,9 +170,7 @@ export function pastVisitsOf(state: DataState, clientId: string): Appointment[] 
   return visitsOf(state, clientId)
     .filter(
       (appointment) =>
-        appointment.status === "done" ||
-        appointment.status === "no-show" ||
-        appointment.status === "cancelled",
+        appointment.status === "done" || appointment.start < NOW_ISO,
     )
     .reverse();
 }
@@ -271,9 +291,9 @@ export function fullDate(iso: string, locale: Locale): string {
   return `${dayMonth(iso, locale)} ${iso.slice(0, 4)}`;
 }
 
-/** "wrzesień 2026" — reads inside a sentence, so the month stays lowercase. */
+/** "listopada 2022" — genitive, because it always reads after "od"/"z". */
 export function lowerMonthYear(iso: string, locale: Locale): string {
-  return monthYear(iso, locale).toLocaleLowerCase(INTL_TAG[locale]);
+  return monthYearGenitive(iso, locale);
 }
 
 

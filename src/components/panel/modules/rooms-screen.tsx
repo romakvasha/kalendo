@@ -48,7 +48,7 @@ export function RoomsScreen() {
 /* ------------------------------------------------------------------ */
 
 function Rooms({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const rooms = useMemo(() => roomsOf(state, tenant.id), [state, tenant.id]);
@@ -117,7 +117,9 @@ function Rooms({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.rooms.subtitle", {
           rooms: rooms.length,
+          roomsWord: tn(rooms.length, "plurals.rooms"),
           locations: tenant.locations.length,
+          locationsWord: tn(tenant.locations.length, "plurals.locationsIn"),
         })}
         action={
           <Button iconLeft={Plus} onClick={() => setAdding(true)}>
@@ -176,6 +178,10 @@ function Rooms({ tenant }: { tenant: Tenant }) {
                                   ? t("panel.rooms.closedToday")
                                   : t("panel.rooms.visitsToday", {
                                       count: day?.segments.length ?? 0,
+                                      visits: tn(
+                                        day?.segments.length ?? 0,
+                                        "plurals.visits",
+                                      ),
                                     })}
                               </p>
                             </div>

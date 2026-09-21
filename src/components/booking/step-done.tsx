@@ -11,7 +11,7 @@ import {
 
 import { TenantLogo } from "@/components/layout";
 import { Badge } from "@/components/ui";
-import { duration, money, timeOf, weekdayDayMonth } from "@/lib/format";
+import { duration, money, timeOf, weekdayDayMonth, weekdayPhrase } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type { Appointment, Tenant } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -44,7 +44,7 @@ export function StepDone({
   const { t, locale } = useI18n();
 
   const date = appointment.start.slice(0, 10);
-  const weekday = weekdayDayMonth(date, locale).split(",")[0].toLowerCase();
+  const weekday = weekdayPhrase(date, locale);
 
   const event: CalendarEvent = {
     uid: appointment.id,

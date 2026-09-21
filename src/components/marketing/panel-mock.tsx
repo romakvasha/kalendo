@@ -23,7 +23,7 @@ const TENANT_ID = "t_aurora";
 
 /** Simplified /panel dashboard, used as the "screenshot" inside a browser frame. */
 export function PanelMock() {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
 
   const tenant = getTenant(SEED_STATE, TENANT_ID);
   const today = appointmentsOn(SEED_STATE, TENANT_ID, TODAY);
@@ -85,6 +85,7 @@ export function PanelMock() {
                 weekday: weekdayDayMonth(TODAY, locale).split(",")[0],
                 date: dayMonth(TODAY, locale),
                 count: today.length,
+                visits: tn(today.length, "plurals.visits"),
               })}
             </p>
 

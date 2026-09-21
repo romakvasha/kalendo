@@ -67,7 +67,7 @@ export function MarketingScreen() {
 /* ------------------------------------------------------------------ */
 
 function Marketing({ tenant }: { tenant: Tenant }) {
-  const { t, locale } = useI18n();
+  const { t, tn, locale } = useI18n();
   const state = useDataState();
 
   const seeded = useMemo(
@@ -124,8 +124,14 @@ function Marketing({ tenant }: { tenant: Tenant }) {
     setComposing(false);
     toast.success(
       scheduled
-        ? t("panel.marketing.scheduledToast", { count: recipients })
-        : t("panel.marketing.sentToast", { count: recipients }),
+        ? t("panel.marketing.scheduledToast", {
+            count: recipients,
+            people: tn(recipients, "plurals.peopleFor"),
+          })
+        : t("panel.marketing.sentToast", {
+            count: recipients,
+            people: tn(recipients, "plurals.peopleTo"),
+          }),
     );
   }
 
@@ -139,7 +145,9 @@ function Marketing({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.marketing.subtitle", {
           count: campaigns.length,
+          campaigns: tn(campaigns.length, "plurals.campaigns"),
           audience: counts.all,
+          clients: tn(counts.all, "plurals.clients"),
         })}
         action={
           <Button iconLeft={Plus} onClick={() => setComposing(true)}>
@@ -287,7 +295,7 @@ function CampaignModal({
   onClose,
   onSend,
 }: CampaignModalProps) {
-  const { t, locale } = useI18n();
+  const { t, tn, locale } = useI18n();
   const [audience, setAudience] = useState<AudienceKey>("all");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -358,6 +366,7 @@ function CampaignModal({
           >
             {t("panel.marketing.recipients", {
               count: formatNumber(recipients, locale),
+              recipients: tn(recipients, "plurals.recipients"),
             })}
           </p>
         </fieldset>
@@ -411,6 +420,7 @@ function CampaignModal({
           <MessageSquare aria-hidden className="mt-0.5 size-4 shrink-0" />
           {t("panel.marketing.costNote", {
             count: recipients * segments,
+            messages: tn(recipients * segments, "plurals.messages"),
           })}
         </p>
       </div>

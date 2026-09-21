@@ -10,6 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { pluralize, type PluralForms } from "@/lib/format";
 import { LOCALES, type Locale, type LocalizedText } from "@/lib/types";
 import { pl, type Dict } from "./pl";
 import { en } from "./en";
@@ -27,6 +28,7 @@ export const LOCALE_LABELS: Record<Locale, { short: string; name: string }> = {
 
 export type TranslateVars = Record<string, string | number>;
 export type Translate = (key: string, vars?: TranslateVars) => string;
+export type TranslatePlural = (count: number, key: string) => string;
 export type Localize = (text: LocalizedText | null | undefined) => string;
 
 const STORAGE_KEY = "kalendo.locale";
@@ -49,6 +51,26 @@ function resolve(dict: Dict, key: string): string | undefined {
     node = (node as Record<string, unknown>)[part];
   }
   return typeof node === "string" ? node : undefined;
+}
+
+/** Reads a `{ one, few, many, other }` node out of the dictionary. */
+function resolveForms(dict: Dict, key: string): PluralForms | undefined {
+  let node: unknown = dict;
+  for (const part of key.split(".")) {
+    if (typeof node !== "object" || node === null) return undefined;
+    node = (node as Record<string, unknown>)[part];
+  }
+  if (typeof node !== "object" || node === null) return undefined;
+  const forms = node as Record<string, unknown>;
+  if (typeof forms.one !== "string" || typeof forms.other !== "string") {
+    return undefined;
+  }
+  return {
+    one: forms.one,
+    few: typeof forms.few === "string" ? forms.few : undefined,
+    many: typeof forms.many === "string" ? forms.many : undefined,
+    other: forms.other,
+  };
 }
 
 function interpolate(text: string, vars?: TranslateVars): string {
@@ -76,10 +98,25 @@ export function translate(
   return interpolate(value, vars);
 }
 
+/** The noun form agreeing with `count`, e.g. translatePlural("pl", "plurals.visits", 22). */
+export function translatePlural(
+  locale: Locale,
+  key: string,
+  count: number,
+): string {
+  const forms = resolveForms(dictionaries[locale], key);
+  if (!forms) {
+    warnMissing(locale, key);
+    return key;
+  }
+  return pluralize(count, locale, forms);
+}
+
 export interface I18nContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: Translate;
+  tn: TranslatePlural;
   tl: Localize;
 }
 
@@ -121,8 +158,10 @@ export function I18nProvider({
 
   const value = useMemo<I18nContextValue>(() => {
     const t: Translate = (key, vars) => translate(locale, key, vars);
+    const tn: TranslatePlural = (count, key) =>
+      translatePlural(locale, key, count);
     const tl: Localize = (text) => (text ? text[locale] : "");
-    return { locale, setLocale, t, tl };
+    return { locale, setLocale, t, tn, tl };
   }, [locale, setLocale]);
 
   return createElement(I18nContext.Provider, { value }, children);
@@ -138,6 +177,10 @@ export function useI18n(): I18nContextValue {
 
 export function useT(): Translate {
   return useI18n().t;
+}
+
+export function useTn(): TranslatePlural {
+  return useI18n().tn;
 }
 
 export function useLocale(): Locale {

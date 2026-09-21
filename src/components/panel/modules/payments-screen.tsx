@@ -39,7 +39,7 @@ import {
   useHydrated,
   useKalendo,
 } from "@/lib/data";
-import { TODAY, money, timeOf } from "@/lib/format";
+import { TODAY, money, monthYear, timeOf } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
 import type {
   Appointment,
@@ -98,7 +98,7 @@ export function PaymentsScreen() {
 }
 
 function Payments({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const payments = useMemo(
@@ -399,7 +399,8 @@ function Payments({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.payments.subtitle", {
           count: payments.length,
-          month: month,
+          transactions: tn(payments.length, "plurals.transactions"),
+          month: monthYear(`${month}-01`, locale),
         })}
         action={
           <>
@@ -431,12 +432,16 @@ function Payments({ tenant }: { tenant: Tenant }) {
           value={money(depositTotal, locale)}
           hint={t("panel.payments.depositCount", {
             count: upcomingDeposits.length,
+            visits: tn(upcomingDeposits.length, "plurals.visitsGen"),
           })}
         />
         <Stat
           label={t("panel.payments.toSettle")}
           value={money(settleTotal, locale)}
-          hint={t("panel.payments.settleCount", { count: toSettle.length })}
+          hint={t("panel.payments.settleCount", {
+            count: toSettle.length,
+            visits: tn(toSettle.length, "plurals.visits"),
+          })}
         />
       </Card>
 

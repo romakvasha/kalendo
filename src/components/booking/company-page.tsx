@@ -7,11 +7,14 @@ import { ArrowRight } from "lucide-react";
 import {
   categoriesOf,
   eligibleStaff,
+  firstAvailableDate,
   reviewsOf,
   roomsOf,
   servicesOf,
+  slotsFor,
   staffOf,
   useDataState,
+  useHydrated,
 } from "@/lib/data";
 import { TODAY, startOfMonth } from "@/lib/format";
 import { useI18n } from "@/lib/i18n";
@@ -32,12 +35,13 @@ export interface CompanyPageProps {
 export function CompanyPage({ tenant }: CompanyPageProps) {
   const t = useI18n().t;
   const state = useDataState();
+  const hydrated = useHydrated();
 
   const [category, setCategory] = useState<string>(ALL_CATEGORIES);
   const [serviceIds, setServiceIds] = useState<string[]>([]);
   const [staffId, setStaffId] = useState<string | null>(null);
-  const [month, setMonth] = useState<string>(startOfMonth(TODAY));
-  const [date, setDate] = useState<string | null>(null);
+  const [pickedMonth, setPickedMonth] = useState<string | null>(null);
+  const [pickedDate, setPickedDate] = useState<string | null>(null);
   const [time, setTime] = useState<string | null>(null);
 
   const categories = useMemo(
@@ -71,6 +75,22 @@ export function CompanyPage({ tenant }: CompanyPageProps) {
   const staff = team.find((member) => member.id === effectiveStaffId);
   const room = useMemo(() => roomsOf(state, tenant.id)[0], [state, tenant.id]);
 
+  // Opening on an empty day is the worst first impression the rail can make,
+  // so an untouched (or no longer bookable) date jumps to the first free one.
+  const date = useMemo(() => {
+    if (!hydrated) return null;
+    const stillFree =
+      pickedDate !== null &&
+      slotsFor(state, tenant.id, serviceIds, effectiveStaffId, pickedDate).some(
+        (slot) => slot.available,
+      );
+    return stillFree
+      ? pickedDate
+      : firstAvailableDate(state, tenant.id, serviceIds, effectiveStaffId, TODAY);
+  }, [hydrated, pickedDate, state, tenant.id, serviceIds, effectiveStaffId]);
+
+  const month = pickedMonth ?? startOfMonth(date ?? TODAY);
+
   function toggleService(id: string) {
     setServiceIds((current) =>
       current.includes(id)
@@ -86,7 +106,7 @@ export function CompanyPage({ tenant }: CompanyPageProps) {
   }
 
   function pickDate(next: string) {
-    setDate(next);
+    setPickedDate(next);
     setTime(null);
   }
 
@@ -162,7 +182,7 @@ export function CompanyPage({ tenant }: CompanyPageProps) {
               staff={staff}
               room={room}
               month={month}
-              onMonthChange={setMonth}
+              onMonthChange={setPickedMonth}
               date={date}
               onDateChange={pickDate}
               time={time}

@@ -53,7 +53,7 @@ export function ReviewsScreen() {
 /* ------------------------------------------------------------------ */
 
 function Reviews({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
   const addReviewReply = useKalendo((store) => store.addReviewReply);
 
@@ -124,7 +124,12 @@ function Reviews({ tenant }: { tenant: Tenant }) {
       toast.success(t("panel.reviews.nobodyToAsk"));
       return;
     }
-    toast.success(t("panel.reviews.askSent", { count: askable }));
+    toast.success(
+      t("panel.reviews.askSent", {
+        count: askable,
+        clients: tn(askable, "plurals.clientsTo"),
+      }),
+    );
   }
 
   return (
@@ -137,7 +142,9 @@ function Reviews({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.reviews.subtitle", {
           count: reviews.length,
+          reviews: tn(reviews.length, "plurals.reviews"),
           unanswered: unanswered.length,
+          awaiting: tn(unanswered.length, "plurals.awaitingReply"),
         })}
         action={
           <Button iconLeft={MessageSquarePlus} onClick={askForReviews}>
@@ -157,7 +164,10 @@ function Reviews({ tenant }: { tenant: Tenant }) {
             </p>
             <Rating value={average} size="md" className="justify-center" />
             <p className="text-[13px] text-muted">
-              {t("company.reviewsCount", { count: reviews.length })}
+              {t("company.reviewsCount", {
+                count: reviews.length,
+                reviews: tn(reviews.length, "plurals.reviews"),
+              })}
             </p>
           </CardBody>
         </Card>

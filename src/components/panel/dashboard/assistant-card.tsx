@@ -52,7 +52,7 @@ function AssistantHeading({ note }: { note?: string }) {
 }
 
 function useAssistant(tenantId: string) {
-  const { t, tl } = useI18n();
+  const { t, tn, tl } = useI18n();
   const state = useDataState();
   const dismissSuggestion = useKalendo((store) => store.dismissSuggestion);
   const suggestions = useMemo(
@@ -70,8 +70,10 @@ function useAssistant(tenantId: string) {
     suggestion.kind === "fill-gaps" && times.length > 1
       ? t("panel.dashboard.assistantTip", {
           n: times.length,
+          slots: tn(times.length, "plurals.slots"),
           list,
           count: regulars,
+          regulars: tn(regulars, "plurals.regularsTo"),
         })
       : tl(suggestion.body);
 
@@ -141,7 +143,7 @@ export function AssistantPanel({
   limit = 2,
   className,
 }: AssistantPanelProps) {
-  const { t, tl } = useI18n();
+  const { t, tn, tl } = useI18n();
   const { suggestions, list, bodyOf, dismissSuggestion } = useAssistant(tenantId);
   const shown = suggestions.slice(0, limit);
 
@@ -150,7 +152,10 @@ export function AssistantPanel({
   return (
     <section className={cn("flex flex-col rounded-2xl bg-ink p-5 text-paper", className)}>
       <AssistantHeading
-        note={t("panel.dashboard.suggestionCount", { count: suggestions.length })}
+        note={t("panel.dashboard.suggestionCount", {
+          count: suggestions.length,
+          suggestions: tn(suggestions.length, "plurals.suggestions"),
+        })}
       />
 
       <ul className="mt-1 flex flex-1 flex-col">

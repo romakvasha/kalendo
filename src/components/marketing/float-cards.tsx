@@ -80,7 +80,7 @@ export function BookingFloatCard({ className }: { className?: string }) {
 }
 
 export function AutomationFloatCard({ className }: { className?: string }) {
-  const { t } = useI18n();
+  const { t, tn } = useI18n();
 
   return (
     <div
@@ -96,7 +96,10 @@ export function AutomationFloatCard({ className }: { className?: string }) {
         </p>
       </div>
       <p className="mt-2 text-[14px] leading-5 font-medium">
-        {t("landing.float.autoBody", { count: REMINDERS_SENT })}
+        {t("landing.float.autoBody", {
+          count: REMINDERS_SENT,
+          people: tn(REMINDERS_SENT, "plurals.peopleTo"),
+        })}
       </p>
     </div>
   );

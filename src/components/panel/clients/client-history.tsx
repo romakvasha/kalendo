@@ -10,7 +10,7 @@ import { useI18n } from "@/lib/i18n";
 import { groupBy } from "@/lib/utils";
 import type { Appointment, Client } from "@/lib/types";
 
-import { shortDate, statusBadge, visitsOf } from "./helpers";
+import { hasEarlierVisits, shortDate, statusBadge, visitsOf } from "./helpers";
 
 export interface ClientHistoryProps {
   client: Client;
@@ -18,7 +18,7 @@ export interface ClientHistoryProps {
 }
 
 export function ClientHistory({ client, onBookAgain }: ClientHistoryProps) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const visits = useMemo(
@@ -36,8 +36,16 @@ export function ClientHistory({ client, onBookAgain }: ClientHistoryProps) {
       <Card>
         <EmptyState
           icon={CalendarDays}
-          title={t("panel.clients.noVisitsYet")}
-          body={t("panel.clients.noVisitsBody")}
+          title={
+            hasEarlierVisits(client)
+              ? t("panel.clients.noRecentVisits")
+              : t("panel.clients.noVisitsYet")
+          }
+          body={
+            hasEarlierVisits(client)
+              ? t("panel.clients.earlierVisits")
+              : t("panel.clients.noVisitsBody")
+          }
         />
       </Card>
     );
@@ -60,7 +68,10 @@ export function ClientHistory({ client, onBookAgain }: ClientHistoryProps) {
               {year}
             </h3>
             <span className="text-[12px] text-muted">
-              {t("panel.clients.visitsCount", { count: group.length })}
+              {t("panel.clients.visitsCount", {
+                count: group.length,
+                visits: tn(group.length, "plurals.visits"),
+              })}
             </span>
           </div>
 

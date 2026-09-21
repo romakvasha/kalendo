@@ -106,7 +106,7 @@ function ClientCard({ client }: { client: Client }) {
   const stats = (
     <div className="grid grid-cols-3 gap-2">
       <StatTile
-        label={t("panel.clients.visits")}
+        label={t("panel.clients.totalVisits")}
         value={formatNumber(client.visitCount, locale)}
       />
       <StatTile

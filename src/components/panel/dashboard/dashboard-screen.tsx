@@ -55,7 +55,7 @@ export function DashboardScreen() {
 }
 
 function Dashboard({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
   const { account } = usePanelSession();
 
@@ -122,6 +122,7 @@ function Dashboard({ tenant }: { tenant: Tenant }) {
               weekday: full.split(",")[0],
               date: dayMonth(TODAY, locale),
               count: today.visits,
+              visits: tn(today.visits, "plurals.visits"),
             })}
           </p>
         </div>

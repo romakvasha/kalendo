@@ -30,6 +30,7 @@ import {
   CLIENT_SORTS,
   TAG_BADGES,
   clientRows,
+  hasEarlierVisits,
   isClientSort,
   matchesFilter,
   matchesQuery,
@@ -201,7 +202,7 @@ function ClientList({
   rows: ClientRow[];
   className?: string;
 }) {
-  const { t, locale } = useI18n();
+  const { t, tn, locale } = useI18n();
 
   return (
     <ul className={cn("flex flex-col gap-2", className)}>
@@ -228,6 +229,7 @@ function ClientList({
                     ? t("panel.clients.rowMeta", {
                         date: shortDate(lastVisit, locale),
                         count: client.visitCount,
+                        visits: tn(client.visitCount, "plurals.visits"),
                       })
                     : t("panel.clients.since", {
                         date: shortDate(client.since, locale),
@@ -307,7 +309,19 @@ function ClientTable({ rows }: { rows: ClientRow[] }) {
             </td>
 
             <td className="py-3 pr-3 whitespace-nowrap text-muted">
-              {lastVisit ? shortDate(lastVisit, locale) : "—"}
+              {lastVisit ? (
+                shortDate(lastVisit, locale)
+              ) : (
+                <span
+                  title={
+                    hasEarlierVisits(client)
+                      ? t("panel.clients.earlierVisits")
+                      : undefined
+                  }
+                >
+                  —
+                </span>
+              )}
             </td>
 
             <td className="tabular py-3 pr-3 text-right text-ink">

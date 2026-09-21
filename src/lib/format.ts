@@ -172,3 +172,128 @@ export function weekdayHeaders(locale: Locale = "pl"): string[] {
     weekdayShort(addDays("2026-09-21", i), locale),
   );
 }
+
+/* ---------------------------------------------------------------- */
+/* Slavic grammar                                                    */
+/* ---------------------------------------------------------------- */
+
+/**
+ * Intl only ever yields the nominative, but Polish and Ukrainian inflect a
+ * weekday after a preposition ("w środę", not "w środa") and Polish even
+ * changes the preposition itself before "wtorek". Monday-first, so the index
+ * is `weekdayOf(iso) - 1`.
+ */
+const WEEKDAY_PHRASE: Record<Locale, readonly string[]> = {
+  pl: [
+    "w poniedziałek",
+    "we wtorek",
+    "w środę",
+    "w czwartek",
+    "w piątek",
+    "w sobotę",
+    "w niedzielę",
+  ],
+  en: [
+    "on Monday",
+    "on Tuesday",
+    "on Wednesday",
+    "on Thursday",
+    "on Friday",
+    "on Saturday",
+    "on Sunday",
+  ],
+  uk: [
+    "у понеділок",
+    "у вівторок",
+    "у середу",
+    "у четвер",
+    "у п'ятницю",
+    "у суботу",
+    "у неділю",
+  ],
+};
+
+/** "w środę" / "we wtorek" / "у середу" / "on Wednesday" */
+export function weekdayPhrase(iso: string, locale: Locale = "pl"): string {
+  return WEEKDAY_PHRASE[locale][weekdayOf(iso) - 1];
+}
+
+/**
+ * `{ day: "numeric", month: "long" }` already gives the genitive ("24
+ * września"), but a month on its own comes back nominative ("listopad"),
+ * which reads wrong after "od"/"z". English needs no table.
+ */
+const MONTH_GENITIVE: Partial<Record<Locale, readonly string[]>> = {
+  pl: [
+    "stycznia",
+    "lutego",
+    "marca",
+    "kwietnia",
+    "maja",
+    "czerwca",
+    "lipca",
+    "sierpnia",
+    "września",
+    "października",
+    "listopada",
+    "grudnia",
+  ],
+  uk: [
+    "січня",
+    "лютого",
+    "березня",
+    "квітня",
+    "травня",
+    "червня",
+    "липня",
+    "серпня",
+    "вересня",
+    "жовтня",
+    "листопада",
+    "грудня",
+  ],
+};
+
+/** "listopada 2022" / "листопада 2022" / "November 2022" */
+export function monthYearGenitive(iso: string, locale: Locale = "pl"): string {
+  const date = parseLocal(iso);
+  const table = MONTH_GENITIVE[locale];
+  const month = table
+    ? table[date.getMonth()]
+    : new Intl.DateTimeFormat(INTL_LOCALE[locale], { month: "long" }).format(date);
+  return `${month} ${date.getFullYear()}`;
+}
+
+export interface PluralForms {
+  one: string;
+  few?: string;
+  many?: string;
+  other: string;
+}
+
+const PLURAL_RULES: Record<Locale, Intl.PluralRules> = {
+  pl: new Intl.PluralRules(INTL_LOCALE.pl),
+  en: new Intl.PluralRules(INTL_LOCALE.en),
+  uk: new Intl.PluralRules(INTL_LOCALE.uk),
+};
+
+/**
+ * The noun form that agrees with `count` — the caller composes
+ * "{count} {noun}" so the number keeps its own formatting.
+ */
+export function pluralize(
+  count: number,
+  locale: Locale,
+  forms: PluralForms,
+): string {
+  switch (PLURAL_RULES[locale].select(count)) {
+    case "one":
+      return forms.one;
+    case "few":
+      return forms.few ?? forms.other;
+    case "many":
+      return forms.many ?? forms.other;
+    default:
+      return forms.other;
+  }
+}

@@ -31,11 +31,11 @@ import {
   duration,
   minutesOf,
   money,
-  monthYear,
+  monthYearGenitive,
   timeOf,
   weekdayDayMonth,
 } from "@/lib/format";
-import { useLocale, useT, useTl } from "@/lib/i18n";
+import { useLocale, useT, useTl, useTn } from "@/lib/i18n";
 import type { Appointment, PaymentRecord, Tenant } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Avatar, Button, IconButton, Modal, Progress } from "@/components/ui";
@@ -74,6 +74,7 @@ export function VisitDetails({
   className,
 }: VisitDetailsProps) {
   const t = useT();
+  const tn = useTn();
   const tl = useTl();
   const locale = useLocale();
   const router = useRouter();
@@ -146,7 +147,7 @@ export function VisitDetails({
             <p className="truncate text-[13px] text-muted">
               {t("panel.calendar.clientMeta", {
                 n: (client?.visitCount ?? 0) + 1,
-                since: client ? monthYear(client.since, locale) : "—",
+                since: client ? monthYearGenitive(client.since, locale) : "—",
               })}
             </p>
           </div>
@@ -258,6 +259,7 @@ export function VisitDetails({
                 </p>
                 <p className="truncate text-[12px] text-muted">
                   {t("panel.calendar.formFilled", {
+                    questions: tn(4, "plurals.questions"),
                     date: dayMonth(addDays(isoDate, -2), locale),
                     count: answers.length,
                   })}

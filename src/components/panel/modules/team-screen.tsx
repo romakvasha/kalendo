@@ -81,7 +81,7 @@ function scheduleFor(tenant: Tenant): DayRow[] {
 }
 
 function Team({ tenant }: { tenant: Tenant }) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const state = useDataState();
 
   const team = useMemo(() => staffOf(state, tenant.id), [state, tenant.id]);
@@ -162,6 +162,7 @@ function Team({ tenant }: { tenant: Tenant }) {
         }
         subtitle={t("panel.team.subtitle", {
           count: team.length,
+          people: tn(team.length, "plurals.people"),
           utilization: averageUtilization,
         })}
         action={

@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import type { Appointment, Client } from "@/lib/types";
 
 import {
+  hasEarlierVisits,
   nextVisitOf,
   pastVisitsOf,
   paymentBadge,
@@ -75,7 +76,7 @@ export function ClientOverview({
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-2.5 lg:hidden">
         <StatTile
-          label={t("panel.clients.visits")}
+          label={t("panel.clients.totalVisits")}
           value={formatNumber(client.visitCount, locale)}
         />
         <StatTile
@@ -169,7 +170,19 @@ export function ClientOverview({
         </CardHeader>
         <CardBody className="pt-1">
           {recent.length === 0 ? (
-            <EmptyState compact title={t("panel.clients.noVisitsYet")} />
+            <EmptyState
+              compact
+              title={
+                hasEarlierVisits(client)
+                  ? t("panel.clients.noRecentVisits")
+                  : t("panel.clients.noVisitsYet")
+              }
+              body={
+                hasEarlierVisits(client)
+                  ? t("panel.clients.earlierVisits")
+                  : undefined
+              }
+            />
           ) : (
             <ul className="divide-y divide-line">
               {recent.map((appointment) => (

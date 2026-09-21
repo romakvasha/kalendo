@@ -37,7 +37,7 @@ export interface CompanyHeroProps {
 }
 
 export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
   const open = openStateOf(tenant);
   const extraPhotos = Math.max(tenant.photoCount - 3, 0);
 
@@ -109,7 +109,12 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
               {number(tenant.rating, locale)}
             </span>
             <span className="text-muted">
-              ({t("company.reviewsCount", { count: tenant.reviewCount })})
+              (
+              {t("company.reviewsCount", {
+                count: tenant.reviewCount,
+                reviews: tn(tenant.reviewCount, "plurals.reviews"),
+              })}
+              )
             </span>
           </span>
           {tenant.distanceKm !== undefined && (
@@ -197,7 +202,12 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
             <span className="inline-flex items-center gap-2">
               <Rating value={tenant.rating} size="md" showValue />
               <span className="text-muted">
-                ({t("company.reviewsCount", { count: tenant.reviewCount })})
+                (
+              {t("company.reviewsCount", {
+                count: tenant.reviewCount,
+                reviews: tn(tenant.reviewCount, "plurals.reviews"),
+              })}
+              )
               </span>
             </span>
             <span className="inline-flex items-center gap-1.5 text-muted">
@@ -269,7 +279,10 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
             {extraPhotos > 0 && (
               <span className="pointer-events-none absolute inset-0 grid place-items-center rounded-2xl bg-ink/35 backdrop-blur-[2px]">
                 <span className="rounded-full bg-white/90 px-3 py-1.5 text-[12.5px] font-medium text-ink shadow-xs">
-                  {t("company.morePhotos", { count: extraPhotos })}
+                  {t("company.morePhotos", {
+                    count: extraPhotos,
+                    photos: tn(extraPhotos, "plurals.photos"),
+                  })}
                 </span>
               </span>
             )}

@@ -11,9 +11,12 @@ import { Button, IconButton, Stepper } from "@/components/ui";
 import {
   durationOf,
   eligibleStaff,
+  firstAvailableDate,
   priceOf,
   servicesFor,
+  slotsFor,
   useDataState,
+  useHydrated,
   useKalendo,
 } from "@/lib/data";
 import { TODAY, money, startOfWeek, weekdayDayMonth } from "@/lib/format";
@@ -54,6 +57,7 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
   const pathname = usePathname();
   const params = useSearchParams();
   const state = useDataState();
+  const hydrated = useHydrated();
   const createBooking = useKalendo((store) => store.createBooking);
 
   /* ------------------------------------------------ url-held draft */
@@ -68,14 +72,13 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
 
   const rawStaffId = params.get("staff");
   const rawDate = params.get("date");
-  const date = rawDate && rawDate >= TODAY ? rawDate : null;
-  const time = date ? params.get("time") : null;
+  /** Only a date the visitor put in the URL themselves. */
+  const pickedDate = rawDate && rawDate >= TODAY ? rawDate : null;
+  const time = pickedDate ? params.get("time") : null;
 
   /* ---------------------------------------------------- local state */
   const [created, setCreated] = useState<Appointment | null>(null);
-  const [weekAnchor, setWeekAnchor] = useState<string>(() =>
-    startOfWeek(date && date >= TODAY ? date : TODAY),
-  );
+  const [weekOverride, setWeekOverride] = useState<string | null>(null);
   const [mode, setMode] = useState<ServiceMode | null>(
     hasModeQuestion(tenant) ? "wait" : null,
   );
@@ -90,6 +93,35 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
     termsAccepted: false,
     createAccount: false,
   }));
+
+  const services = useMemo(
+    () => servicesFor(state, serviceIds),
+    [state, serviceIds],
+  );
+  // A specialist carried in the URL may not perform every chosen service.
+  const eligible = useMemo(
+    () => eligibleStaff(state, tenant.id, serviceIds),
+    [state, tenant.id, serviceIds],
+  );
+  const staffId =
+    rawStaffId && eligible.some((member) => member.id === rawStaffId)
+      ? rawStaffId
+      : null;
+
+  /* --------------------------------------------------- opening date */
+  // Today is often already booked out, so the step opens on the first day
+  // that has something to offer. Gated on hydration so the server HTML and
+  // the first client render agree.
+  const autoDate = useMemo(
+    () =>
+      hydrated && !pickedDate
+        ? firstAvailableDate(state, tenant.id, serviceIds, staffId, TODAY)
+        : null,
+    [hydrated, pickedDate, state, tenant.id, serviceIds, staffId],
+  );
+
+  const date = pickedDate ?? autoDate;
+  const weekAnchor = weekOverride ?? startOfWeek(date ?? TODAY);
 
   /* ------------------------------------------------------ step guard */
   const requested = params.get("step");
@@ -110,20 +142,6 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
   const step: FlowStep =
     FLOW_STEPS.indexOf(wanted) > FLOW_STEPS.indexOf(reachable) ? reachable : wanted;
 
-  const services = useMemo(
-    () => servicesFor(state, serviceIds),
-    [state, serviceIds],
-  );
-  // A specialist carried in the URL may not perform every chosen service.
-  const eligible = useMemo(
-    () => eligibleStaff(state, tenant.id, serviceIds),
-    [state, tenant.id, serviceIds],
-  );
-  const staffId =
-    rawStaffId && eligible.some((member) => member.id === rawStaffId)
-      ? rawStaffId
-      : null;
-
   /* ---------------------------------------------------- url helpers */
   const urlFor = useCallback(
     (next: {
@@ -136,7 +154,9 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
       const query = new URLSearchParams();
       const ids = next.serviceIds ?? serviceIds;
       const nextStaff = next.staffId === undefined ? staffId : next.staffId;
-      const nextDate = next.date === undefined ? date : next.date;
+      // The auto-picked date is deliberately not carried over: leaving it out
+      // lets the search re-run when the service or the specialist changes.
+      const nextDate = next.date === undefined ? pickedDate : next.date;
       const nextTime = next.time === undefined ? time : next.time;
       if (ids.length) query.set("service", ids.join(","));
       if (nextStaff) query.set("staff", nextStaff);
@@ -145,7 +165,7 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
       query.set("step", next.step ?? step);
       return `${pathname}?${query.toString()}`;
     },
-    [pathname, serviceIds, staffId, date, time, step],
+    [pathname, serviceIds, staffId, pickedDate, time, step],
   );
 
   const goTo = useCallback(
@@ -234,11 +254,25 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
   }, [tenant.customFields, local.customFields, mode, t]);
 
   /* -------------------------------------------------------- actions */
+  // `undefined` keeps a date the visitor picked, `null` drops it so the
+  // first-free-day search runs again for the new selection.
+  function keepDate(ids: string[], staff: string | null): string | null | undefined {
+    if (!pickedDate) return null;
+    const free = slotsFor(state, tenant.id, ids, staff, pickedDate).some(
+      (slot) => slot.available,
+    );
+    return free ? undefined : null;
+  }
+
   function toggleService(id: string) {
     const next = serviceIds.includes(id)
       ? serviceIds.filter((value) => value !== id)
       : [...serviceIds, id];
-    patchDraft({ serviceIds: next, time: null });
+    patchDraft({
+      serviceIds: next,
+      date: keepDate(next, staffId),
+      time: null,
+    });
   }
 
   function applyCode(code: string): boolean {
@@ -364,13 +398,19 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
             tenant={tenant}
             serviceIds={serviceIds}
             staffId={staffId}
-            onStaffChange={(next) => patchDraft({ staffId: next, time: null })}
+            onStaffChange={(next) =>
+              patchDraft({
+                staffId: next,
+                date: keepDate(serviceIds, next),
+                time: null,
+              })
+            }
             weekAnchor={weekAnchor}
-            onWeekAnchorChange={setWeekAnchor}
+            onWeekAnchorChange={setWeekOverride}
             date={date}
             onDateChange={(next) => patchDraft({ date: next, time: null })}
             time={time}
-            onTimeChange={(next) => patchDraft({ time: next })}
+            onTimeChange={(next) => patchDraft({ date, time: next })}
             mode={mode}
             onModeChange={setMode}
             onEditServices={() => goTo("usluga")}

@@ -113,7 +113,7 @@ export function ClientHomeMock() {
 
 /** Compact mock of /b/[slug] — a company's public booking page. */
 export function CompanyPageMock() {
-  const { t, tl, locale } = useI18n();
+  const { t, tn, tl, locale } = useI18n();
 
   const tenant = getTenantBySlug(SEED_STATE, "aurora");
   if (!tenant) return null;
@@ -132,7 +132,10 @@ export function CompanyPageMock() {
           <div className="mt-2 flex items-center gap-2">
             <Rating value={tenant.rating} size="sm" />
             <span className="text-[11px] text-muted">
-              {t("company.reviewsCount", { count: tenant.reviewCount })}
+              {t("company.reviewsCount", {
+                count: tenant.reviewCount,
+                reviews: tn(tenant.reviewCount, "plurals.reviews"),
+              })}
             </span>
           </div>
         </div>
