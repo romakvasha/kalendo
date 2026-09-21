@@ -1,0 +1,327 @@
+@import "tailwindcss";
+
+/* ============================================================
+   KALENDO — design tokens
+   Visual system: "jasny premium" (light premium)
+   ============================================================ */
+
+@theme {
+  /* --- core palette (from the design system swatches) --- */
+  --color-ink: #1a1713;
+  --color-paper: #fcfaf7;
+  --color-cobalt: #1b5bda;
+  --color-cobalt-soft: #e6f0ff;
+  --color-success: #167645;
+  --color-success-soft: #e3f2e9;
+  --color-warn: #feefcf;
+  --color-warn-ink: #8a5a00;
+  --color-danger: #c0392f;
+  --color-danger-soft: #fdecea;
+
+  /* --- warm neutral ramp (derived from ink on paper) --- */
+  --color-sand-50: #faf7f3;
+  --color-sand-100: #f4f0ea;
+  --color-sand-200: #e9e3da;
+  --color-sand-300: #d9d1c5;
+  --color-sand-400: #b3a999;
+  --color-sand-500: #8b8274;
+  --color-sand-600: #6a6256;
+  --color-sand-700: #4c463d;
+  --color-sand-800: #2f2b25;
+
+  /* semantic aliases */
+  --color-line: #ece6dd;
+  --color-line-strong: #ded6ca;
+  --color-muted: #7d7568;
+  --color-board: #e8e2da;
+
+  /* --- service colours used on calendar chips --- */
+  --color-svc-peach: #fbdfc8;
+  --color-svc-rose: #fbd6de;
+  --color-svc-violet: #e2dbf7;
+  --color-svc-sky: #d6e6f7;
+  --color-svc-mint: #d7efd9;
+  --color-svc-sand: #f8efc7;
+
+  --color-svc-peach-ink: #8a4b16;
+  --color-svc-rose-ink: #96305a;
+  --color-svc-violet-ink: #4b3a99;
+  --color-svc-sky-ink: #1d4f86;
+  --color-svc-mint-ink: #1f6b3e;
+  --color-svc-sand-ink: #7a5f12;
+
+  /* --- typography --- */
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --font-display: var(--font-instrument-serif), var(--font-playfair), Georgia,
+    "Times New Roman", serif;
+
+  /* --- radii --- */
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-3xl: 36px;
+  --radius-phone: 44px;
+
+  /* --- elevation: soft, warm, premium --- */
+  --shadow-xs: 0 1px 2px rgba(26, 23, 19, 0.05);
+  --shadow-sm: 0 1px 3px rgba(26, 23, 19, 0.06), 0 1px 2px rgba(26, 23, 19, 0.04);
+  --shadow-md: 0 4px 16px -4px rgba(26, 23, 19, 0.1), 0 2px 6px -2px rgba(26, 23, 19, 0.05);
+  --shadow-lg: 0 16px 40px -12px rgba(26, 23, 19, 0.16), 0 4px 12px -4px rgba(26, 23, 19, 0.06);
+  --shadow-xl: 0 32px 72px -24px rgba(26, 23, 19, 0.22), 0 8px 20px -8px rgba(26, 23, 19, 0.08);
+  --shadow-phone: 0 40px 80px -30px rgba(26, 23, 19, 0.3), 0 8px 24px -8px rgba(26, 23, 19, 0.1);
+
+  /* --- motion --- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ------------------------------------------------------------
+   Per-tenant brand colour. Set --brand / --brand-soft / --brand-fg
+   on any wrapper (see <BrandProvider>) and every `*-brand`
+   utility below follows it at runtime.
+   ------------------------------------------------------------ */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-ink: var(--brand-ink);
+}
+
+:root {
+  --brand: #1b5bda;
+  --brand-soft: #e6f0ff;
+  --brand-fg: #ffffff;
+  --brand-ink: #123c91;
+  color-scheme: light;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv01", "cv03", "ss01";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--color-cobalt-soft);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cobalt);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* numeric data should never jitter while it animates */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* `font-display` comes from the --font-display theme token. These rules carry the
+   editorial detail the face needs: tighter tracking, and the roman/italic mix the
+   design sets on a single line via an inner <em>. */
+.font-display {
+  letter-spacing: -0.015em;
+  font-weight: 400;
+}
+
+.font-display em {
+  font-style: italic;
+  font-weight: inherit;
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+/* Surface = the warm card used everywhere in the mockups */
+@utility surface {
+  background-color: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+@utility surface-flat {
+  background-color: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+}
+
+/* Hides scrollbars on horizontal chip rows while keeping the scroll */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Thin warm scrollbar for the panel's scrollable columns */
+@utility thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sand-300) transparent;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-sand-300);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* Diagonal hatch — used for breaks / absences on the calendar */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-sand-200) 0px,
+    var(--color-sand-200) 1px,
+    transparent 1px,
+    transparent 7px
+  );
+}
+
+/* Safe area padding for mobile bottom navigation */
+@utility pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+@utility mb-safe {
+  margin-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+@utility pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+@keyframes kal-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes kal-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kal-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes kal-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-success) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@utility animate-fade-up {
+  animation: kal-fade-up 0.45s var(--ease-out-soft) both;
+}
+
+@utility animate-fade-in {
+  animation: kal-fade-in 0.35s var(--ease-out-soft) both;
+}
+
+@utility animate-scale-in {
+  animation: kal-scale-in 0.28s var(--ease-out-soft) both;
+}
+
+@utility animate-pulse-ring {
+  animation: kal-pulse-ring 2s ease-out infinite;
+}
+
+/* Skeleton shimmer for loading states */
+@utility skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-sand-100);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    );
+    animation: kal-shimmer 1.6s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print: reports and day sheets should print cleanly */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
