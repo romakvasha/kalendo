@@ -38,7 +38,7 @@ export function PanelMock() {
   return (
     <BrandProvider brand={tenant.brand}>
       <div className="flex min-h-[340px] bg-board">
-        <aside className="hidden w-[180px] shrink-0 flex-col border-r border-line bg-white py-4 lg:flex">
+        <aside className="hidden w-[180px] shrink-0 flex-col border-r border-line bg-card py-4 lg:flex">
           <div className="px-4">
             <KalendoLogo size="sm" />
           </div>
@@ -63,7 +63,7 @@ export function PanelMock() {
         </aside>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-3 border-b border-line bg-white px-4 py-2.5">
+          <div className="flex items-center justify-between gap-3 border-b border-line bg-card px-4 py-2.5">
             <p className="truncate text-[13px] font-semibold text-ink">
               {tenant.name}
             </p>
@@ -90,21 +90,21 @@ export function PanelMock() {
             </p>
 
             <div className="mt-3.5 grid grid-cols-2 gap-2.5 lg:grid-cols-3">
-              <div className="rounded-md border border-line bg-white p-3">
+              <div className="rounded-md border border-line bg-card p-3">
                 <Stat
                   label={t("panel.dashboard.revenueToday")}
                   value={money(revenue, locale)}
                   tone="muted"
                 />
               </div>
-              <div className="rounded-md border border-line bg-white p-3">
+              <div className="rounded-md border border-line bg-card p-3">
                 <Stat
                   label={t("panel.dashboard.visitsToday")}
                   value={today.length}
                   tone="muted"
                 />
               </div>
-              <div className="col-span-2 rounded-md border border-line bg-white p-3 lg:col-span-1">
+              <div className="col-span-2 rounded-md border border-line bg-card p-3 lg:col-span-1">
                 <Stat
                   label={t("panel.dashboard.utilization")}
                   value={`${utilization}%`}
@@ -113,7 +113,7 @@ export function PanelMock() {
               </div>
             </div>
 
-            <div className="mt-2.5 rounded-md border border-line bg-white">
+            <div className="mt-2.5 rounded-md border border-line bg-card">
               <p className="border-b border-line px-3.5 py-2.5 text-[12px] font-semibold text-ink">
                 {t("panel.dashboard.nextVisits")}
               </p>

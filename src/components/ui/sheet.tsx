@@ -27,7 +27,7 @@ export function Sheet({
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange}>
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 z-50 bg-ink/35 backdrop-blur-[3px]" />
+        <Drawer.Overlay className="fixed inset-0 z-50 bg-ink/35 backdrop-blur-[3px] dark:bg-paper/70" />
         <Drawer.Content
           // Radix asks for a description; this sheet is labelled by its title.
           aria-describedby={undefined}
@@ -64,7 +64,7 @@ export function Sheet({
           </div>
 
           {footer ? (
-            <div className="pb-safe shrink-0 border-t border-line bg-white/80 px-5 py-4 backdrop-blur-sm">
+            <div className="pb-safe shrink-0 border-t border-line bg-card/80 px-5 py-4 backdrop-blur-sm">
               {footer}
             </div>
           ) : null}

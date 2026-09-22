@@ -1,55 +1,74 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ============================================================
    KALENDO — design tokens
-   Visual system: "jasny premium" (light premium)
+
+   Every colour is declared twice: once on :root (the "jasny
+   premium" light system from the reference design) and once on
+   .dark (a warm dark system, never cold grey). Utilities resolve
+   through @theme inline, so a class like `bg-card` follows the
+   active theme with no dark: variant at the call site.
    ============================================================ */
 
+@theme inline {
+  --color-ink: var(--c-ink);
+  --color-paper: var(--c-paper);
+  --color-card: var(--c-card);
+  --color-cobalt: var(--c-cobalt);
+  --color-cobalt-soft: var(--c-cobalt-soft);
+  --color-success: var(--c-success);
+  --color-success-soft: var(--c-success-soft);
+  --color-warn: var(--c-warn);
+  --color-warn-ink: var(--c-warn-ink);
+  --color-danger: var(--c-danger);
+  --color-danger-soft: var(--c-danger-soft);
+
+  --color-sand-50: var(--c-sand-50);
+  --color-sand-100: var(--c-sand-100);
+  --color-sand-200: var(--c-sand-200);
+  --color-sand-300: var(--c-sand-300);
+  --color-sand-400: var(--c-sand-400);
+  --color-sand-500: var(--c-sand-500);
+  --color-sand-600: var(--c-sand-600);
+  --color-sand-700: var(--c-sand-700);
+  --color-sand-800: var(--c-sand-800);
+
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-muted: var(--c-muted);
+  --color-board: var(--c-board);
+
+  --color-svc-peach: var(--c-svc-peach);
+  --color-svc-rose: var(--c-svc-rose);
+  --color-svc-violet: var(--c-svc-violet);
+  --color-svc-sky: var(--c-svc-sky);
+  --color-svc-mint: var(--c-svc-mint);
+  --color-svc-sand: var(--c-svc-sand);
+
+  --color-svc-peach-ink: var(--c-svc-peach-ink);
+  --color-svc-rose-ink: var(--c-svc-rose-ink);
+  --color-svc-violet-ink: var(--c-svc-violet-ink);
+  --color-svc-sky-ink: var(--c-svc-sky-ink);
+  --color-svc-mint-ink: var(--c-svc-mint-ink);
+  --color-svc-sand-ink: var(--c-svc-sand-ink);
+
+  /* Per-tenant brand, written by <BrandProvider>. */
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-ink: var(--brand-ink);
+
+  --shadow-xs: var(--sh-xs);
+  --shadow-sm: var(--sh-sm);
+  --shadow-md: var(--sh-md);
+  --shadow-lg: var(--sh-lg);
+  --shadow-xl: var(--sh-xl);
+  --shadow-phone: var(--sh-phone);
+}
+
 @theme {
-  /* --- core palette (from the design system swatches) --- */
-  --color-ink: #1a1713;
-  --color-paper: #fcfaf7;
-  --color-cobalt: #1b5bda;
-  --color-cobalt-soft: #e6f0ff;
-  --color-success: #167645;
-  --color-success-soft: #e3f2e9;
-  --color-warn: #feefcf;
-  --color-warn-ink: #8a5a00;
-  --color-danger: #c0392f;
-  --color-danger-soft: #fdecea;
-
-  /* --- warm neutral ramp (derived from ink on paper) --- */
-  --color-sand-50: #faf7f3;
-  --color-sand-100: #f4f0ea;
-  --color-sand-200: #e9e3da;
-  --color-sand-300: #d9d1c5;
-  --color-sand-400: #b3a999;
-  --color-sand-500: #8b8274;
-  --color-sand-600: #6a6256;
-  --color-sand-700: #4c463d;
-  --color-sand-800: #2f2b25;
-
-  /* semantic aliases */
-  --color-line: #ece6dd;
-  --color-line-strong: #ded6ca;
-  --color-muted: #7d7568;
-  --color-board: #e8e2da;
-
-  /* --- service colours used on calendar chips --- */
-  --color-svc-peach: #fbdfc8;
-  --color-svc-rose: #fbd6de;
-  --color-svc-violet: #e2dbf7;
-  --color-svc-sky: #d6e6f7;
-  --color-svc-mint: #d7efd9;
-  --color-svc-sand: #f8efc7;
-
-  --color-svc-peach-ink: #8a4b16;
-  --color-svc-rose-ink: #96305a;
-  --color-svc-violet-ink: #4b3a99;
-  --color-svc-sky-ink: #1d4f86;
-  --color-svc-mint-ink: #1f6b3e;
-  --color-svc-sand-ink: #7a5f12;
-
   /* --- typography --- */
   --font-sans: var(--font-onest), ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --font-display: var(--font-instrument-serif), var(--font-playfair), Georgia,
@@ -65,37 +84,138 @@
   --radius-3xl: 36px;
   --radius-phone: 44px;
 
-  /* --- elevation: soft, warm, premium --- */
-  --shadow-xs: 0 1px 2px rgba(26, 23, 19, 0.05);
-  --shadow-sm: 0 1px 3px rgba(26, 23, 19, 0.06), 0 1px 2px rgba(26, 23, 19, 0.04);
-  --shadow-md: 0 4px 16px -4px rgba(26, 23, 19, 0.1), 0 2px 6px -2px rgba(26, 23, 19, 0.05);
-  --shadow-lg: 0 16px 40px -12px rgba(26, 23, 19, 0.16), 0 4px 12px -4px rgba(26, 23, 19, 0.06);
-  --shadow-xl: 0 32px 72px -24px rgba(26, 23, 19, 0.22), 0 8px 20px -8px rgba(26, 23, 19, 0.08);
-  --shadow-phone: 0 40px 80px -30px rgba(26, 23, 19, 0.3), 0 8px 24px -8px rgba(26, 23, 19, 0.1);
-
   /* --- motion --- */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ------------------------------------------------------------
-   Per-tenant brand colour. Set --brand / --brand-soft / --brand-fg
-   on any wrapper (see <BrandProvider>) and every `*-brand`
-   utility below follows it at runtime.
+   LIGHT — the reference design system
    ------------------------------------------------------------ */
-@theme inline {
-  --color-brand: var(--brand);
-  --color-brand-soft: var(--brand-soft);
-  --color-brand-fg: var(--brand-fg);
-  --color-brand-ink: var(--brand-ink);
-}
-
 :root {
+  color-scheme: light;
+
+  --c-ink: #1a1713;
+  --c-paper: #fcfaf7;
+  --c-card: #ffffff;
+  --c-cobalt: #1b5bda;
+  --c-cobalt-soft: #e6f0ff;
+  --c-success: #167645;
+  --c-success-soft: #e3f2e9;
+  --c-warn: #feefcf;
+  --c-warn-ink: #8a5a00;
+  --c-danger: #c0392f;
+  --c-danger-soft: #fdecea;
+
+  --c-sand-50: #faf7f3;
+  --c-sand-100: #f4f0ea;
+  --c-sand-200: #e9e3da;
+  --c-sand-300: #d9d1c5;
+  --c-sand-400: #b3a999;
+  --c-sand-500: #7a7264;
+  --c-sand-600: #625a4e;
+  --c-sand-700: #4c463d;
+  --c-sand-800: #2f2b25;
+
+  --c-line: #ece6dd;
+  --c-line-strong: #ded6ca;
+  /* Darker than the reference swatch: at 12–15px on paper the original #7d7568
+     measured 4.3:1, just under the 4.5:1 needed for body text. */
+  --c-muted: #6d6557;
+  --c-board: #e8e2da;
+
+  --c-svc-peach: #fbdfc8;
+  --c-svc-rose: #fbd6de;
+  --c-svc-violet: #e2dbf7;
+  --c-svc-sky: #d6e6f7;
+  --c-svc-mint: #d7efd9;
+  --c-svc-sand: #f8efc7;
+
+  --c-svc-peach-ink: #8a4b16;
+  --c-svc-rose-ink: #96305a;
+  --c-svc-violet-ink: #4b3a99;
+  --c-svc-sky-ink: #1d4f86;
+  --c-svc-mint-ink: #1f6b3e;
+  --c-svc-sand-ink: #7a5f12;
+
+  --sh-xs: 0 1px 2px rgba(26, 23, 19, 0.05);
+  --sh-sm: 0 1px 3px rgba(26, 23, 19, 0.06), 0 1px 2px rgba(26, 23, 19, 0.04);
+  --sh-md: 0 4px 16px -4px rgba(26, 23, 19, 0.1), 0 2px 6px -2px rgba(26, 23, 19, 0.05);
+  --sh-lg: 0 16px 40px -12px rgba(26, 23, 19, 0.16), 0 4px 12px -4px rgba(26, 23, 19, 0.06);
+  --sh-xl: 0 32px 72px -24px rgba(26, 23, 19, 0.22), 0 8px 20px -8px rgba(26, 23, 19, 0.08);
+  --sh-phone: 0 40px 80px -30px rgba(26, 23, 19, 0.3), 0 8px 24px -8px rgba(26, 23, 19, 0.1);
+
   --brand: #1b5bda;
   --brand-soft: #e6f0ff;
   --brand-fg: #ffffff;
   --brand-ink: #123c91;
-  color-scheme: light;
+
+  --shimmer: rgba(255, 255, 255, 0.7);
+}
+
+/* ------------------------------------------------------------
+   DARK — warm, not grey. `ink` and `paper` swap roles, so every
+   `bg-ink text-paper` emphasis card keeps its contrast for free.
+   ------------------------------------------------------------ */
+.dark {
+  color-scheme: dark;
+
+  --c-ink: #f4efe7;
+  --c-paper: #141210;
+  --c-card: #1c1916;
+  --c-cobalt: #6d9bf5;
+  --c-cobalt-soft: #1a2740;
+  --c-success: #4fb37c;
+  --c-success-soft: #16291f;
+  --c-warn: #3a2f18;
+  --c-warn-ink: #eac685;
+  --c-danger: #e8756a;
+  --c-danger-soft: #351b19;
+
+  /* The neutral ramp inverts: 50 stays closest to the page, 800 to the text. */
+  --c-sand-50: #191614;
+  --c-sand-100: #221e1a;
+  --c-sand-200: #2c2722;
+  --c-sand-300: #3e382f;
+  --c-sand-400: #7d7567;
+  --c-sand-500: #968c7d;
+  --c-sand-600: #b0a695;
+  --c-sand-700: #cdc4b4;
+  --c-sand-800: #e9e3d8;
+
+  --c-line: #2e2923;
+  --c-line-strong: #423b32;
+  --c-muted: #9c9284;
+  --c-board: #0e0c0b;
+
+  --c-svc-peach: #3b2a1c;
+  --c-svc-rose: #3a2028;
+  --c-svc-violet: #282246;
+  --c-svc-sky: #1a2c42;
+  --c-svc-mint: #16301f;
+  --c-svc-sand: #332c16;
+
+  --c-svc-peach-ink: #f0c49a;
+  --c-svc-rose-ink: #f2a8c0;
+  --c-svc-violet-ink: #c0b3f0;
+  --c-svc-sky-ink: #a3c8ee;
+  --c-svc-mint-ink: #9cd8b0;
+  --c-svc-sand-ink: #e2cd85;
+
+  /* Dark surfaces need depth from black, not from the warm ink. */
+  --sh-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sh-sm: 0 1px 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --sh-md: 0 4px 16px -4px rgba(0, 0, 0, 0.55), 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+  --sh-lg: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+  --sh-xl: 0 32px 72px -24px rgba(0, 0, 0, 0.75), 0 8px 20px -8px rgba(0, 0, 0, 0.45);
+  --sh-phone: 0 40px 80px -30px rgba(0, 0, 0, 0.8), 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+
+  --brand: #6d9bf5;
+  --brand-soft: #1a2740;
+  --brand-fg: #10151f;
+  --brand-ink: #a9c4f8;
+
+  --shimmer: rgba(255, 255, 255, 0.06);
 }
 
 /* ============================================================
@@ -153,14 +273,14 @@ body {
 
 /* Surface = the warm card used everywhere in the mockups */
 @utility surface {
-  background-color: #ffffff;
+  background-color: var(--color-card);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
 }
 
 @utility surface-flat {
-  background-color: #ffffff;
+  background-color: var(--color-card);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-xl);
 }
@@ -296,12 +416,7 @@ body {
     position: absolute;
     inset: 0;
     transform: translateX(-100%);
-    background-image: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.7),
-      transparent
-    );
+    background-image: linear-gradient(90deg, transparent, var(--shimmer), transparent);
     animation: kal-shimmer 1.6s infinite;
   }
 }
@@ -316,12 +431,16 @@ body {
   }
 }
 
-/* Print: reports and day sheets should print cleanly */
+/* Print: reports and day sheets should print cleanly, always on white */
 @media print {
   .no-print {
     display: none !important;
   }
+  html {
+    color-scheme: light;
+  }
   body {
     background: #fff;
+    color: #000;
   }
 }

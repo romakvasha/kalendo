@@ -67,7 +67,7 @@ export function StepDone({
   return (
     <div className="animate-fade-up mx-auto flex w-full max-w-lg flex-col items-center text-center">
       <span className="animate-scale-in grid size-20 place-items-center rounded-full bg-success-soft text-success">
-        <span className="animate-pulse-ring grid size-14 place-items-center rounded-full bg-success text-white">
+        <span className="animate-pulse-ring grid size-14 place-items-center rounded-full bg-success text-paper">
           <Check className="size-7" strokeWidth={2.5} aria-hidden />
         </span>
       </span>
@@ -80,7 +80,7 @@ export function StepDone({
       </p>
 
       {/* ------------------------------------------------- ticket */}
-      <div className="relative mt-7 w-full overflow-hidden rounded-2xl border border-line bg-white text-left shadow-sm">
+      <div className="relative mt-7 w-full overflow-hidden rounded-2xl border border-line bg-card text-left shadow-sm">
         <div className="p-5">
           <div className="flex items-start justify-between gap-3">
             <p className="text-[13.5px] font-medium text-sand-700">
@@ -190,7 +190,7 @@ export function StepDone({
       <div className="mt-6 flex w-full items-center gap-3.5 rounded-xl border border-cobalt/15 bg-cobalt-soft p-4 text-left">
         <span
           aria-hidden
-          className="grid size-10 shrink-0 place-items-center rounded-md bg-cobalt text-white"
+          className="grid size-10 shrink-0 place-items-center rounded-md bg-cobalt text-paper"
         >
           <Smartphone className="size-[18px]" strokeWidth={1.75} />
         </span>
@@ -222,6 +222,6 @@ export function StepDone({
 }
 
 const CALENDAR_BUTTON = cn(
-  "inline-flex h-10 items-center justify-center rounded-md border border-line bg-white",
+  "inline-flex h-10 items-center justify-center rounded-md border border-line bg-card",
   "text-[13px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50",
 );

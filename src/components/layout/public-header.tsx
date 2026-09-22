@@ -15,7 +15,7 @@ const GHOST_LINK =
   "inline-flex items-center rounded-md px-3 py-2 text-[13px] font-medium text-sand-700 transition-colors hover:bg-sand-100 hover:text-ink";
 
 const SECONDARY_LINK =
-  "inline-flex items-center rounded-md border border-line bg-white px-3.5 py-2 text-[13px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50";
+  "inline-flex items-center rounded-md border border-line bg-card px-3.5 py-2 text-[13px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50";
 
 export interface PublicHeaderProps {
   tenant: Tenant;
@@ -29,7 +29,7 @@ export function PublicHeader({ tenant, className }: PublicHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b border-line bg-white/85 pt-safe backdrop-blur-md",
+        "sticky top-0 z-40 border-b border-line bg-card/85 pt-safe backdrop-blur-md",
         className,
       )}
     >

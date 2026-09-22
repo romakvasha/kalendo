@@ -152,7 +152,7 @@ function Assistant({ tenant }: { tenant: Tenant }) {
         />
         <div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <span className="inline-grid size-10 place-items-center rounded-full bg-cobalt text-white">
+            <span className="inline-grid size-10 place-items-center rounded-full bg-cobalt text-paper">
               <Sparkles aria-hidden className="size-5" />
             </span>
             <h2 className="font-display mt-4 text-[26px] leading-[1.12] lg:text-[32px]">

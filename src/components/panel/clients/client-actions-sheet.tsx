@@ -167,7 +167,7 @@ export function ClientActionsSheet({
             {duplicates.map((duplicate) => (
               <li
                 key={duplicate.id}
-                className="flex items-center gap-3 rounded-lg border border-line bg-white p-3"
+                className="flex items-center gap-3 rounded-lg border border-line bg-card p-3"
               >
                 <Avatar name={duplicate.name} size="sm" />
                 <div className="min-w-0 flex-1">

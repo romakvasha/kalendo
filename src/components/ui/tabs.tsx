@@ -132,7 +132,7 @@ export function Segmented({
               sizing.item,
               block && "flex-1",
               active
-                ? "bg-white text-ink shadow-xs"
+                ? "bg-card text-ink shadow-xs"
                 : "text-muted hover:text-sand-700",
             )}
           >
@@ -173,7 +173,7 @@ export function Chip({
         "disabled:pointer-events-none disabled:opacity-45",
         active
           ? "border-ink bg-ink text-paper"
-          : "border-line bg-white text-sand-700 hover:border-line-strong hover:bg-sand-50",
+          : "border-line bg-card text-sand-700 hover:border-line-strong hover:bg-sand-50",
         className,
       )}
       {...props}

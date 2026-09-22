@@ -145,7 +145,7 @@ export function AppointmentBlock({
         style={{ touchAction: "none" }}
         className={cn(
           "absolute right-0.5 bottom-0.5 inline-grid size-4 cursor-grab place-items-center rounded-xs",
-          "bg-white/55 opacity-60 transition-opacity duration-150",
+          "bg-card/55 opacity-60 transition-opacity duration-150",
           "lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-visible:opacity-100",
         )}
       >

@@ -17,7 +17,7 @@ import {
   PhoneInput,
   Select,
 } from "@/components/ui";
-import { SEED_STATE, useKalendo } from "@/lib/data";
+import { useKalendo } from "@/lib/data";
 import { useT } from "@/lib/i18n";
 import type { AccountKind, Industry } from "@/lib/types";
 import { AccountTypeChoice } from "./account-type-choice";
@@ -46,14 +46,6 @@ function digitsOf(value: string): string {
   return value.replace(/\D/g, "");
 }
 
-/** The demo tenant whose seeded panel matches the industry the user picked. */
-function demoTenantId(industry: Industry): string {
-  return (
-    SEED_STATE.tenants.find((tenant) => tenant.industry === industry)?.id ??
-    SEED_STATE.tenants[0].id
-  );
-}
-
 export interface SignupFormProps {
   initialType: AccountKind;
 }
@@ -62,7 +54,15 @@ export function SignupForm({ initialType }: SignupFormProps) {
   const t = useT();
   const router = useRouter();
   const signInAsClient = useKalendo((state) => state.signInAsClient);
-  const signInAsCompany = useKalendo((state) => state.signInAsCompany);
+
+  // The company itself is created at the end of onboarding, so nothing is
+  // signed in here — the form only carries what it collected into step 1.
+  const onboardingHref = () => {
+    const params = new URLSearchParams({ industry });
+    if (companyName.trim()) params.set("name", companyName.trim());
+    if (phone.trim()) params.set("phone", `${prefix} ${phone}`.trim());
+    return `/onboarding?${params.toString()}`;
+  };
 
   const ids = useId();
   const fieldId = (name: string) => `${ids}-${name}`;
@@ -116,9 +116,8 @@ export function SignupForm({ initialType }: SignupFormProps) {
     if (Object.keys(found).length) return;
 
     if (type === "company") {
-      signInAsCompany(demoTenantId(industry));
       toast.success(t("toast.accountCreated"));
-      router.push("/onboarding");
+      router.push(onboardingHref());
     } else {
       signInAsClient(name, `${prefix} ${phone}`.trim());
       toast.success(t("toast.smsSent"));
@@ -128,9 +127,8 @@ export function SignupForm({ initialType }: SignupFormProps) {
 
   const continueWithProvider = () => {
     if (type === "company") {
-      signInAsCompany(demoTenantId(industry));
       toast.success(t("toast.accountCreated"));
-      router.push("/onboarding");
+      router.push(onboardingHref());
       return;
     }
     signInAsClient(name, `${prefix} ${phone}`.trim());

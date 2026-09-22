@@ -381,6 +381,7 @@ export const en: Dict = {
   },
 
   onboarding: {
+    untitledCompany: "My company",
     title: "Let's set up your company",
     stepOf: "Step {current} of {total}",
     skip: "Skip",
@@ -814,6 +815,13 @@ export const en: Dict = {
   },
 
   panel: {
+    switcher: {
+      label: "Switch company",
+      title: "Choose a company",
+      yours: "Your companies",
+      demo: "Demo",
+      newCompany: "New company",
+    },
     dashboard: {
       greeting: "Good morning, {name}",
       subtitle: "{weekday}, {date} · {count} {visits} today",
@@ -1419,6 +1427,13 @@ export const en: Dict = {
     profile: "Profile",
     company: "Company details",
     language: "Language",
+    appearance: "Appearance",
+    theme: {
+      light: "Light",
+      dark: "Dark",
+      system: "System",
+      hint: "Match your system setting, or choose manually.",
+    },
     notifications: "Notifications",
     bookingPage: "Booking page",
     integrations: "Integrations",
@@ -1545,6 +1560,7 @@ export const en: Dict = {
   },
 
   toast: {
+    companyCreated: "{name} is ready — welcome to your panel",
     bookingConfirmed: "Booking confirmed",
     bookingCancelled: "Visit cancelled",
     rescheduled: "Visit rescheduled",
@@ -1578,6 +1594,7 @@ export const en: Dict = {
     prevDay: "Previous day",
     nextDay: "Next day",
     changeLanguage: "Change language",
+    toggleTheme: "Change theme",
     notifications: "Notifications",
     userMenu: "Account menu",
     back: "Back",

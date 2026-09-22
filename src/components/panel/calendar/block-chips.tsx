@@ -16,12 +16,12 @@ export interface VisitChip {
 }
 
 const TONES: Record<ChipTone, string> = {
-  success: "bg-white/65 text-success",
-  danger: "bg-white/75 text-danger",
-  info: "bg-white/75 text-cobalt",
-  warn: "bg-white/75 text-warn-ink",
-  muted: "bg-white/60 text-sand-600",
-  neutral: "bg-white/60 text-sand-700",
+  success: "bg-card/65 text-success",
+  danger: "bg-card/75 text-danger",
+  info: "bg-card/75 text-cobalt",
+  warn: "bg-card/75 text-warn-ink",
+  muted: "bg-card/60 text-sand-600",
+  neutral: "bg-card/60 text-sand-700",
 };
 
 export interface ChipsInput {

@@ -383,6 +383,7 @@ export const uk: Dict = {
   },
 
   onboarding: {
+    untitledCompany: "Моя компанія",
     title: "Налаштуймо вашу компанію",
     stepOf: "Крок {current} з {total}",
     skip: "Пропустити",
@@ -818,6 +819,13 @@ export const uk: Dict = {
   },
 
   panel: {
+    switcher: {
+      label: "Змінити компанію",
+      title: "Виберіть компанію",
+      yours: "Ваші компанії",
+      demo: "Демо",
+      newCompany: "Нова компанія",
+    },
     dashboard: {
       greeting: "Доброго ранку, {name}",
       subtitle: "{weekday}, {date} · {count} {visits} сьогодні",
@@ -1425,6 +1433,13 @@ export const uk: Dict = {
     profile: "Профіль",
     company: "Дані компанії",
     language: "Мова",
+    appearance: "Вигляд",
+    theme: {
+      light: "Світла",
+      dark: "Темна",
+      system: "Системна",
+      hint: "Підлаштувати під систему або обрати вручну.",
+    },
     notifications: "Сповіщення",
     bookingPage: "Сторінка записів",
     integrations: "Інтеграції",
@@ -1551,6 +1566,7 @@ export const uk: Dict = {
   },
 
   toast: {
+    companyCreated: "Компанію {name} створено — вітаємо в панелі",
     bookingConfirmed: "Запис підтверджено",
     bookingCancelled: "Візит скасовано",
     rescheduled: "Час візиту змінено",
@@ -1584,6 +1600,7 @@ export const uk: Dict = {
     prevDay: "Попередній день",
     nextDay: "Наступний день",
     changeLanguage: "Змінити мову",
+    toggleTheme: "Змінити тему",
     notifications: "Сповіщення",
     userMenu: "Меню акаунта",
     back: "Назад",

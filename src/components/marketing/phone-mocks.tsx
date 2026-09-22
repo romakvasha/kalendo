@@ -42,7 +42,7 @@ export function ClientHomeMock() {
         <Avatar name={DEMO_CLIENT_ACCOUNT.name} size="sm" />
       </div>
 
-      <div className="mt-3.5 flex h-10 items-center gap-2 rounded-full border border-line bg-white px-3.5">
+      <div className="mt-3.5 flex h-10 items-center gap-2 rounded-full border border-line bg-card px-3.5">
         <Search aria-hidden className="size-4 shrink-0 text-sand-400" strokeWidth={1.75} />
         <span className="truncate text-[13px] text-sand-400">
           {t("discover.searchPlaceholder")}
@@ -51,7 +51,7 @@ export function ClientHomeMock() {
 
       {next && tenant ? (
         <BrandProvider brand={tenant.brand}>
-          <div className="mt-4 overflow-hidden rounded-lg border border-line bg-white shadow-sm">
+          <div className="mt-4 overflow-hidden rounded-lg border border-line bg-card shadow-sm">
             <div className="flex items-center gap-2.5 border-b border-line px-3.5 py-3">
               <TenantLogo tenant={tenant} size="sm" />
               <div className="min-w-0 flex-1">
@@ -88,7 +88,7 @@ export function ClientHomeMock() {
         {nearby.map((item) => (
           <li
             key={item.id}
-            className="flex items-center gap-2.5 rounded-md border border-line bg-white px-3 py-2.5"
+            className="flex items-center gap-2.5 rounded-md border border-line bg-card px-3 py-2.5"
           >
             <BrandProvider brand={item.brand}>
               <TenantLogo tenant={item} size="sm" />
@@ -121,7 +121,7 @@ export function CompanyPageMock() {
 
   return (
     <BrandProvider brand={tenant.brand}>
-      <div className="flex flex-col bg-white">
+      <div className="flex flex-col bg-card">
         <div className="h-20 bg-brand-soft" aria-hidden />
         <div className="-mt-6 px-4">
           <TenantLogo tenant={tenant} size="lg" className="shadow-sm" />

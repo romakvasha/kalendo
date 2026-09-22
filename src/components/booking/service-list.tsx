@@ -112,7 +112,7 @@ export function ServiceRow({
       <span className="hidden lg:inline-flex">{toggle}</span>
       <Link
         href={href}
-        className="inline-flex h-9 items-center rounded-md border border-line bg-white px-3 text-[13px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50 lg:hidden"
+        className="inline-flex h-9 items-center rounded-md border border-line bg-card px-3 text-[13px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50 lg:hidden"
       >
         {service.group ? t("company.joinClass") : t("company.book")}
       </Link>
@@ -127,7 +127,7 @@ export function ServiceRow({
         "flex items-start gap-3 rounded-lg border px-3.5 py-3 transition-colors duration-150 sm:items-center sm:gap-4",
         selected
           ? "border-brand/35 bg-brand-soft/55"
-          : "border-line bg-white hover:border-line-strong",
+          : "border-line bg-card hover:border-line-strong",
       )}
     >
       <span

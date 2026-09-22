@@ -344,7 +344,7 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
   return (
     <div className="min-h-dvh bg-paper">
       {/* --------------------------------------------------- header */}
-      <header className="pt-safe sticky top-0 z-40 border-b border-line bg-white/90 backdrop-blur-md">
+      <header className="pt-safe sticky top-0 z-40 border-b border-line bg-card/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-[880px] items-center gap-3 px-4 lg:px-8">
           {step === "gotowe" ? (
             <span className="size-11 shrink-0" />
@@ -457,7 +457,7 @@ export function BookingFlow({ tenant }: BookingFlowProps) {
 
       {/* ------------------------------------------- sticky actions */}
       {step !== "gotowe" && (
-        <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 backdrop-blur-md">
+        <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 backdrop-blur-md">
           <div className="mx-auto flex w-full max-w-[880px] items-center gap-3 px-4 py-3 lg:px-8">
             <div className="min-w-0 flex-1">
               {step === "dane" ? (

@@ -215,7 +215,7 @@ export function WeekStrip({
                   ? "border-brand bg-brand text-brand-fg"
                   : disabled
                     ? "border-line bg-sand-50 text-sand-400"
-                    : "border-line bg-white text-ink hover:border-line-strong",
+                    : "border-line bg-card text-ink hover:border-line-strong",
               )}
             >
               <span className="text-[11px] opacity-80">

@@ -1,20 +1,20 @@
 # Kalendo
 
-Система онлайн-запису на візити для сервісних компаній — салонів краси, фізіотерапії,
-стоматології, автосервісів. Один продукт, три поверхні:
+An online appointment-booking system for service businesses — hair and beauty salons,
+physiotherapy, dental practices, car workshops. One product, three surfaces:
 
-| Поверхня | Маршрут | Для кого |
+| Surface | Route | For whom |
 |---|---|---|
-| Клієнтський застосунок | `/app` | клієнт: знайти фірму, записатися, оплатити, керувати візитами |
-| Публічна сторінка фірми | `/b/[slug]` | клієнти конкретної фірми — без реєстрації |
-| Панель адміністратора | `/panel` | власник і команда: календар, клієнти, гроші, звіти |
+| Client app | `/app` | the client: find a company, book, pay, manage visits |
+| Public company page | `/b/[slug]` | that company's own clients — no account needed |
+| Admin panel | `/panel` | the owner and the team: calendar, clients, money, reports |
 
-Кожна фірма-клієнт отримує власну сторінку на кшталт `aurora.kalendo.pl`
-(у демо — `/b/aurora`), зі своїм логотипом, кольором бренду й мовами.
+Every company that buys the system gets its own page, such as `aurora.kalendo.pl`
+(`/b/aurora` in this demo), with its own logo, brand colour and languages.
 
 ---
 
-## Запуск
+## Running it
 
 ```bash
 npm install
@@ -24,136 +24,184 @@ npm install
 npm run dev
 ```
 
-Відкрити http://localhost:3000
+Open http://localhost:3000
 
 ```bash
 npm run build
 ```
 
-Вимоги: Node.js 20.9+ (перевірено на 24). Next.js 16 використовує Turbopack за
-замовчуванням — окремий прапорець не потрібен.
+Requires Node.js 20.9+ (tested on 24). Next.js 16 uses Turbopack by default — no flag
+needed.
 
 ---
 
-## Демо-дані
+## Demo data
 
-Проєкт працює на детермінованих демо-даних — без бази, без бекенду. Це навмисно:
-сторінку можна показати клієнту одразу, а шар даних замінюється в одному місці.
+The project runs on deterministic demo data — no database, no backend. That is
+deliberate: the product can be shown to a customer immediately, and the data layer is
+swapped in one place.
 
-**Демо-годинник закріплений** на `2026-09-21, 11:05` (константи `TODAY`, `NOW_ISO`
-у `src/lib/format.ts` та `src/lib/data/seed.ts`). Завдяки цьому календар, звіти та
-«найближчий візит» завжди виглядають однаково — і збігаються з макетом.
+**The demo clock is pinned** to `2026-09-21, 11:05` (the `TODAY` and `NOW_ISO` constants
+in `src/lib/format.ts` and `src/lib/data/seed.ts`). That keeps the calendar, the reports
+and "your next visit" looking identical on every run, and matching the reference design.
 
-Три демонстраційні фірми:
+Three demo companies:
 
-| Фірма | Маршрут | Галузь | Колір |
+| Company | Route | Industry | Colour |
 |---|---|---|---|
-| Studio Aurora | `/b/aurora` | перукарня | кобальт |
-| Fizjo Balans | `/b/fizjobalans` | фізіотерапія | зелений |
-| Garaż 44 | `/b/garaz44` | автосервіс і шиномонтаж | помаранчевий |
+| Studio Aurora | `/b/aurora` | hair salon | cobalt |
+| Fizjo Balans | `/b/fizjobalans` | physiotherapy | green |
+| Garaż 44 | `/b/garaz44` | car workshop and tyres | orange |
 
-У сідах: 30 послуг, 12 спеціалістів, 47 клієнтів, 140 візитів, відгуки, бони,
-абонементи, склад, платежі та підказки асистента.
+The seed holds 30 services, 12 specialists, 47 clients, 140 appointments, plus reviews,
+gift cards, passes, stock, payments and assistant suggestions.
 
 ---
 
-## Архітектура
+## Architecture
 
 ```
 src/
   app/
-    page.tsx              лендинг
-    (auth)/               реєстрація та вхід
-    onboarding/           майстер налаштування фірми (5 кроків)
-    app/                  клієнтський застосунок
-    b/[slug]/             публічна сторінка фірми + процес запису
-    panel/                панель адміністратора (15 модулів)
+    page.tsx              marketing landing page
+    (auth)/               sign-up and sign-in
+    onboarding/           5-step company setup wizard
+    app/                  client app
+    b/[slug]/             public company page + booking flow
+    panel/                admin panel (15 modules)
   components/
-    ui/                   дизайн-система: 33 компоненти
-    layout/               каркаси: сайдбар, таб-бар, шапки
-    brand/                логотипи, рамка телефона, перемикач мов
-    charts/               графіки на чистому SVG, без бібліотек
+    ui/                   design system: 33 components
+    layout/               shells: sidebar, tab bar, headers
+    brand/                logos, phone frame, language and theme switchers
+    charts/               charts in plain SVG, no library
   lib/
-    types.ts              доменна модель
-    data/                 сіди, стор (zustand), запити
-    i18n/                 три мови, 829 ключів на мову
-    format.ts             гроші, дати, тривалість — з урахуванням локалі
-    brand.ts              теми брендів і кольори послуг
-    calendar-geometry.ts  математика денного календаря
-    nav.ts                конфігурація навігації
+    types.ts              the domain model
+    data/                 seed, store (zustand), queries
+    i18n/                 three languages, 1310 keys each
+    format.ts             money, dates, duration — locale aware
+    brand.ts              brand themes and service colours
+    calendar-geometry.ts  the maths behind the day calendar
+    nav.ts                navigation configuration
 ```
 
-### Шар даних
+### The data layer
 
-`src/lib/data/queries.ts` — чисті функції, що приймають `DataState` першим аргументом.
-`src/lib/data/store.ts` — стор на zustand з persist у `localStorage`.
-`src/lib/data/hooks.ts` — тонкі React-хуки поверх обох.
+`src/lib/data/queries.ts` — pure functions taking `DataState` as their first argument.
+`src/lib/data/store.ts` — a zustand store persisted to `localStorage`.
+`src/lib/data/hooks.ts` — thin React hooks over both.
 
-Щоб під'єднати справжній бекенд, замінюються саме ці три файли: типи, компоненти та
-екрани лишаються без змін. Найважливіша функція — `slotsFor()`: вона рахує реальну
-доступність (години роботи мінус візити мінус перерви, з урахуванням тривалості послуги),
-а не віддає захардкоджений список.
+To connect a real backend you replace exactly these three files; the types, the
+components and the screens stay as they are. The most important function is `slotsFor()`:
+it computes real availability (opening hours, minus appointments, minus breaks, with the
+service duration required to fit) rather than returning a hard-coded list.
 
-### Мови
+Records the user creates at runtime live in a separate `custom` slice, and the catalogue
+the app reads is always seed + custom. That keeps storage small and lets a change to the
+demo data still reach browsers that already hold a user-created company.
 
-Польська, англійська, українська. Словники вкладені, звернення через крапку:
-`t("panel.calendar.today")`. Мова зберігається в `localStorage` і читається після
-монтування — тому немає розбіжності між сервером і клієнтом.
+### Languages
 
-Instrument Serif не має кирилиці, тому для українських заголовків підключений
-Playfair Display — браузер підставляє його поглифово.
+Polish, English and Ukrainian. The dictionaries are nested and addressed with dots:
+`t("panel.calendar.today")`. The chosen locale is kept in `localStorage` and read after
+mount, so the server and the first client render agree.
+
+Instrument Serif has no Cyrillic, so Playfair Display is loaded for Ukrainian headings —
+the browser falls back per glyph.
+
+Polish and Ukrainian inflect, and `Intl` only ever returns the nominative. `format.ts`
+therefore exports `weekdayPhrase()` ("w środę", not "w środa"), `monthYearGenitive()`
+("od listopada 2022") and `pluralize()` (1 wizyta / 2 wizyty / 5 wizyt), the last built on
+`Intl.PluralRules`. Interpolate those, never a bare `Intl` result.
 
 ---
 
-## Дизайн-система
+## Design system
 
-Токени живуть у `src/app/globals.css` через `@theme` (Tailwind v4 — файлу
-`tailwind.config.js` немає).
+Tokens live in `src/app/globals.css` under `@theme` (Tailwind v4 — there is no
+`tailwind.config.js`).
 
-| Токен | Значення | Призначення |
+| Token | Value | Purpose |
 |---|---|---|
-| `ink` | `#1A1713` | основний текст, темні поверхні |
-| `paper` | `#FCFAF7` | тло |
-| `cobalt` | `#1B5BDA` | акцент продукту |
-| `success` | `#167645` | оплачено, підтверджено |
-| `warn` | `#FEEFCF` | попередження, без завдатку |
-| `svc-*` | 6 пастельних | кольори послуг у календарі |
-| `brand` | змінна | колір бренду конкретної фірми |
+| `ink` | `#1A1713` | primary text, dark surfaces |
+| `paper` | `#FCFAF7` | page background |
+| `card` | `#FFFFFF` | a raised surface on the page |
+| `cobalt` | `#1B5BDA` | the product's own accent |
+| `success` | `#167645` | paid, confirmed |
+| `warn` | `#FEEFCF` | warnings, no deposit |
+| `svc-*` | 6 pastels | service colours on the calendar |
+| `brand` | variable | the individual company's colour |
 
-`brand` — це CSS-змінна, яку виставляє `<BrandProvider>`. Тому та сама кнопка
-`bg-brand` буде синьою в Aurora, зеленою у Fizjo Balans і помаранчевою в Garaż 44,
-без дублювання стилів.
+`brand` is a CSS variable written by `<BrandProvider>`. That is why the same `bg-brand`
+button is blue in Aurora, green in Fizjo Balans and orange in Garaż 44, with no duplicated
+styles.
 
----
+### Light and dark themes
 
-## Як додати нову фірму
+Every colour is declared twice: on `:root` and on `.dark`. Components use tokens, so
+switching theme needs no `dark:` in the markup — the whole project contains just two such
+exceptions (the dialog scrim and the switch knob), each with a comment explaining why.
 
-1. Додати `Tenant` у `SEED_TENANTS` (`src/lib/data/seed.ts`) — слаг, галузь, `brand`,
-   години роботи, політика завдатку.
-2. Додати категорії, послуги та спеціалістів із тим самим `tenantId`.
-3. За потреби описати `customFields` — поля форми запису, специфічні для галузі
-   (наприклад, марка авто й номер для автосервісу).
+Two behaviours to know before editing:
 
-Сторінка `/b/<slug>` з'явиться автоматично.
+- **`ink` and `paper` swap roles.** In dark mode `ink` becomes warm off-white and `paper`
+  near-black. That is what makes every maximum-contrast surface (`bg-ink text-paper`: the
+  assistant card, the next-visit card, primary buttons) invert by itself and keep its
+  intent. Do not work around it.
+- **The `sand` ramp inverts.** `sand-50` is always nearest the page background and
+  `sand-800` nearest the text, so `bg-sand-100` stays a subtle chip in both themes.
 
----
+Company brand colours carry dark variants in `brand.ts`. `BrandProvider` writes them as
+inline styles, which would beat the `.dark` rules, so the CSS `light-dark()` function
+makes the choice.
 
-## Що є демо, а що готове до продакшену
-
-**Готове:** уся UI-система, доступність, адаптивність, три мови, розрахунок вільних
-слотів, геометрія календаря з перетинами, експорт CSV/ICS, стан і мутації.
-
-**Потребує бекенду перед продажем:**
-
-- реальна база даних і мультитенантність на рівні БД (зараз `localStorage`);
-- автентифікація — SMS-код, Google, Apple (зараз будь-який код приймається);
-- платежі — BLIK, картки, Apple/Google Pay (зараз симуляція);
-- надсилання SMS та e-mail (зараз тости в інтерфейсі);
-- фіскалізація, рахунки-фактури, JPK;
-- узгодження з RODO/GDPR: обробник даних, строки зберігання, право на видалення.
+Contrast was verified by measuring in the browser rather than by eye: 0 WCAG AA failures
+on the key screens in both themes. The only dimmed elements are past dates and taken
+slots, which the standard exempts as inactive controls.
 
 ---
 
-## Ліцензія
+## Adding a company
 
-Приватний проєкт.
+Two ways, depending on what you need.
+
+**At runtime** — go through `/onboarding`. The wizard calls `createTenant()` on the store,
+which builds the tenant, a category, the services, the staff, a room and the owner's
+account, then signs that account in. The company is persisted and its `/b/<slug>` page
+works immediately, including after a reload. Note that it exists only in that browser
+until there is a backend.
+
+**In the seed** — for a company that should ship with the product:
+
+1. Add a `Tenant` to `SEED_TENANTS` (`src/lib/data/seed.ts`) — slug, industry, `brand`,
+   opening hours, deposit policy.
+2. Add categories, services and staff carrying the same `tenantId`.
+3. Where the industry needs them, describe `customFields` — the booking-form fields
+   specific to that trade, such as car make and registration for a workshop.
+
+The `/b/<slug>` page appears on its own, and a seeded company is server-rendered.
+
+---
+
+## What is demo and what is production-ready
+
+**Ready:** the whole UI system, accessibility, responsiveness, the three languages, both
+themes, availability computation, the overlap geometry of the calendar, CSV and ICS
+export, and all state and mutations.
+
+**Needs a backend before you can sell it:**
+
+- a real database and tenant isolation at the database level (currently `localStorage`);
+- authentication — SMS code, Google, Apple (any code is currently accepted);
+- payments — BLIK, cards, Apple/Google Pay (currently simulated);
+- sending SMS and e-mail (currently only toasts in the UI);
+- fiscalisation, VAT invoices, JPK;
+- GDPR work: a data-processing agreement, retention periods, the right to erasure.
+
+A company created through the wizard lives in one browser, so its booking link cannot be
+shared until the database exists. Seeded companies are server-rendered and open anywhere.
+
+---
+
+## Licence
+
+Private project.

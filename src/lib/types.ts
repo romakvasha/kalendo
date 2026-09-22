@@ -39,6 +39,11 @@ export interface BrandTheme {
   fg: string;
   /** Darker shade for text on top of `soft`. */
   ink: string;
+  /** The same four roles on a dark background. */
+  baseDark: string;
+  softDark: string;
+  fgDark: string;
+  inkDark: string;
 }
 
 export type TenantFeature =

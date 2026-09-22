@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 /* ------------------------------------------------------------------ */
 
 const CONTROL_BASE =
-  "w-full rounded-md border border-line bg-white px-3.5 text-[15px] text-ink " +
+  "w-full rounded-md border border-line bg-card px-3.5 text-[15px] text-ink " +
   "placeholder:text-sand-400 transition-[border-color,box-shadow] duration-150 " +
   "focus-visible:outline-none focus-visible:border-cobalt focus-visible:ring-2 focus-visible:ring-cobalt/20 " +
   "disabled:cursor-not-allowed disabled:bg-sand-50 disabled:text-sand-500";
@@ -194,7 +194,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
     return (
       <div
         className={cn(
-          "flex h-11 w-full items-stretch overflow-hidden rounded-md border border-line bg-white",
+          "flex h-11 w-full items-stretch overflow-hidden rounded-md border border-line bg-card",
           "transition-[border-color,box-shadow] duration-150",
           "focus-within:border-cobalt focus-within:ring-2 focus-within:ring-cobalt/20",
           invalid &&
@@ -264,7 +264,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             disabled={disabled}
             className={cn(
-              "peer size-5 cursor-pointer appearance-none rounded-xs border border-line-strong bg-white",
+              "peer size-5 cursor-pointer appearance-none rounded-xs border border-line-strong bg-card",
               "transition-colors duration-150 checked:border-ink checked:bg-ink",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25 focus-visible:ring-offset-1",
               "disabled:cursor-not-allowed disabled:bg-sand-100",
@@ -307,7 +307,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         type="radio"
         disabled={disabled}
         className={cn(
-          "mt-px size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-line-strong bg-white",
+          "mt-px size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-line-strong bg-card",
           "transition-all duration-150 checked:border-[6px] checked:border-ink",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25 focus-visible:ring-offset-1",
           "disabled:cursor-not-allowed disabled:bg-sand-100",
@@ -368,7 +368,9 @@ export function Switch({
       <span
         aria-hidden
         className={cn(
-          "size-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-out",
+          "size-5 rounded-full bg-card shadow-sm transition-transform duration-200 ease-out",
+          // On the dark unchecked track a card-coloured knob all but disappears.
+          !checked && "dark:bg-sand-600",
           checked ? "translate-x-5" : "translate-x-0",
         )}
       />

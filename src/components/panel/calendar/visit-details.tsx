@@ -249,7 +249,7 @@ export function VisitDetails({
           </div>
 
           {answers.length > 0 ? (
-            <div className="mt-4 flex items-center gap-3 rounded-lg border border-line bg-white p-3">
+            <div className="mt-4 flex items-center gap-3 rounded-lg border border-line bg-card p-3">
               <span className="grid size-9 shrink-0 place-items-center rounded-md bg-cobalt-soft text-cobalt">
                 <ClipboardList aria-hidden className="size-4.5" />
               </span>
@@ -310,7 +310,7 @@ export function VisitDetails({
 
       <div
         className={cn(
-          "shrink-0 space-y-2 border-t border-line bg-white/80 py-4 backdrop-blur-sm",
+          "shrink-0 space-y-2 border-t border-line bg-card/80 py-4 backdrop-blur-sm",
           showHeader ? "px-4 lg:px-5" : "px-0",
         )}
       >

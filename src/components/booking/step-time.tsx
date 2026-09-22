@@ -98,7 +98,7 @@ export function StepTime({
   return (
     <div className="animate-fade-up flex flex-col gap-7">
       {/* ------------------------------------------ summary strip */}
-      <div className="flex items-center gap-3 rounded-lg border border-line bg-white px-3.5 py-3">
+      <div className="flex items-center gap-3 rounded-lg border border-line bg-card px-3.5 py-3">
         <span
           aria-hidden
           className={cn(
@@ -197,7 +197,7 @@ export function StepTime({
       <div className="flex items-center gap-3 rounded-lg border border-line bg-sand-50 px-3.5 py-3">
         <span
           aria-hidden
-          className="grid size-9 shrink-0 place-items-center rounded-md bg-white text-sand-600"
+          className="grid size-9 shrink-0 place-items-center rounded-md bg-card text-sand-600"
         >
           <Hourglass className="size-[17px]" strokeWidth={1.75} />
         </span>
@@ -252,7 +252,7 @@ function ModeCard({ selected, onSelect, title, note }: ModeCardProps) {
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30",
         selected
           ? "border-ink bg-sand-50"
-          : "border-line bg-white hover:border-line-strong",
+          : "border-line bg-card hover:border-line-strong",
       )}
     >
       <span className="block pr-7 text-[14px] font-medium text-ink">{title}</span>

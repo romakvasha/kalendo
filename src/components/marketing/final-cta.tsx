@@ -40,7 +40,7 @@ export function FinalCta() {
               size="lg"
               variant="ghost"
               block
-              className="text-paper hover:bg-white/10 sm:w-auto"
+              className="text-paper hover:bg-paper/10 sm:w-auto"
               onClick={() => router.push("/b/aurora")}
             >
               {t("landing.ctaSecondary")}

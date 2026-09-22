@@ -14,7 +14,7 @@ export function PublicFooter({ tenant }: PublicFooterProps) {
   const t = useI18n().t;
 
   return (
-    <footer className="mt-12 border-t border-line bg-white lg:mt-20">
+    <footer className="mt-12 border-t border-line bg-card lg:mt-20">
       <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-4 px-4 py-7 text-[12.5px] text-muted sm:flex-row sm:items-center sm:justify-between lg:px-8">
         <p>
           © 2026 {tenant.name} · {tenant.address}, {tenant.city}

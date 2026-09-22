@@ -23,6 +23,8 @@ export interface TenantCardProps extends TenantMeta {
   lastMinute?: boolean;
   favourite?: boolean;
   onToggleFavourite?: (tenantId: string) => void;
+  /** Lets the discover grid drop the fixed phone width from lg up. */
+  className?: string;
 }
 
 /** The ~160px card used by the horizontal "free today" row. */
@@ -32,12 +34,13 @@ export function TenantCard({
   lastMinute = false,
   favourite = false,
   onToggleFavourite,
+  className,
 }: TenantCardProps) {
   const { t, locale } = useI18n();
 
   return (
     <BrandProvider brand={tenant.brand}>
-      <div className="relative w-40 shrink-0">
+      <div className={cn("relative w-40 shrink-0", className)}>
         <Link href={`/b/${tenant.slug}`} className="block rounded-lg">
           <div className="relative grid h-28 place-items-center overflow-hidden rounded-lg border border-line bg-brand-soft px-3">
             <span className="font-display text-center text-[17px] leading-tight text-brand-ink">
@@ -90,7 +93,7 @@ export function TenantCard({
             aria-pressed={favourite}
             aria-label={t("discover.favourites")}
             onClick={() => onToggleFavourite(tenant.id)}
-            className="absolute top-1.5 right-1.5 rounded-full bg-white/90"
+            className="absolute top-1.5 right-1.5 rounded-full bg-card/90"
           >
             <Heart
               className={cn(favourite ? "text-danger" : "text-sand-500")}

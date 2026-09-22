@@ -49,7 +49,7 @@ export function QuickActions({ onNewVisit, className }: QuickActionsProps) {
           href={href}
           className={cn(
             TILE,
-            "border-line bg-white text-ink shadow-xs hover:border-line-strong hover:bg-sand-50",
+            "border-line bg-card text-ink shadow-xs hover:border-line-strong hover:bg-sand-50",
           )}
         >
           <Icon className="size-5" strokeWidth={1.7} aria-hidden />

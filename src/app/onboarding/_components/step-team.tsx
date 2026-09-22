@@ -27,7 +27,7 @@ export function StepTeam({ draft, team, onChange }: StepTeamProps) {
         {team.map((member) => (
           <li
             key={member.id}
-            className="rounded-lg border border-line bg-white p-3 sm:flex sm:items-end sm:gap-3 sm:p-3.5"
+            className="rounded-lg border border-line bg-card p-3 sm:flex sm:items-end sm:gap-3 sm:p-3.5"
           >
             <div className="flex items-center gap-3 sm:hidden">
               <Avatar name={member.name || "?"} size="sm" />

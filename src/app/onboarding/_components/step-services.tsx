@@ -31,7 +31,7 @@ export function StepServices({ services, onChange }: StepServicesProps) {
         {services.map((service) => (
           <li
             key={service.id}
-            className="rounded-lg border border-line bg-white p-3 sm:flex sm:items-end sm:gap-3 sm:p-3.5"
+            className="rounded-lg border border-line bg-card p-3 sm:flex sm:items-end sm:gap-3 sm:p-3.5"
           >
             <div className="min-w-0 flex-1">
               <label

@@ -39,7 +39,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fcfaf7",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fcfaf7" },
+    { media: "(prefers-color-scheme: dark)", color: "#141210" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -50,6 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="pl"
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
       className={`${onest.variable} ${instrumentSerif.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-paper text-ink">

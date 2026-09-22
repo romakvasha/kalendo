@@ -18,7 +18,12 @@ import type { LucideIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge, Button, Card, IconButton, Modal, Skeleton } from "@/components/ui";
-import { LanguageSegmented, TenantLogo, usePanelSession } from "@/components/layout";
+import {
+  LanguageSegmented,
+  TenantLogo,
+  ThemeToggle,
+  usePanelSession,
+} from "@/components/layout";
 import { staffOf, useDataState, useHydrated, useKalendo } from "@/lib/data";
 import { LOCALE_LABELS, useI18n } from "@/lib/i18n";
 import { iconFor } from "@/lib/nav";
@@ -151,13 +156,13 @@ function More({ tenant }: { tenant: Tenant }) {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25 focus-visible:ring-offset-1 focus-visible:ring-offset-paper",
                 featured
                   ? "border-ink bg-ink text-paper"
-                  : "border-line bg-white text-ink hover:border-line-strong hover:bg-sand-50",
+                  : "border-line bg-card text-ink hover:border-line-strong hover:bg-sand-50",
               )}
             >
               <span
                 className={cn(
                   "inline-grid size-9 place-items-center rounded-sm",
-                  featured ? "bg-cobalt text-white" : "bg-sand-100 text-ink",
+                  featured ? "bg-cobalt text-paper" : "bg-sand-100 text-ink",
                 )}
               >
                 <Icon className="size-[18px]" strokeWidth={1.7} aria-hidden />
@@ -168,7 +173,7 @@ function More({ tenant }: { tenant: Tenant }) {
               {featured ? (
                 <Badge
                   size="sm"
-                  className="absolute top-2.5 right-2.5 border-transparent bg-cobalt text-white"
+                  className="absolute top-2.5 right-2.5 border-transparent bg-cobalt text-paper"
                 >
                   {t("panel.modules.newBadge")}
                 </Badge>
@@ -180,6 +185,9 @@ function More({ tenant }: { tenant: Tenant }) {
 
       <Card flat className="overflow-hidden">
         <ul className="divide-y divide-line">
+          <li>
+            <ThemeToggle variant="row" />
+          </li>
           {SETTING_ROWS.map(({ key, labelKey, icon: Icon }) => (
             <li key={key}>
               <Link
@@ -227,7 +235,7 @@ function More({ tenant }: { tenant: Tenant }) {
         closeLabel={t("common.close")}
       >
         <div className="flex flex-col items-center gap-4">
-          <div className="w-full max-w-[16rem] rounded-lg border border-line bg-white p-4">
+          <div className="w-full max-w-[16rem] rounded-lg border border-line bg-card p-4">
             <QrCode value={url} title={t("panel.modules.qrCode")} />
           </div>
           <p className="text-center text-[14px] font-medium text-ink">{host}</p>

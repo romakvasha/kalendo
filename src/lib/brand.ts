@@ -12,6 +12,10 @@ export const BRAND_THEMES: Record<BrandKey, BrandTheme> = {
     soft: "#e6f0ff",
     fg: "#ffffff",
     ink: "#123c91",
+    baseDark: "#6d9bf5",
+    softDark: "#1a2740",
+    fgDark: "#10151f",
+    inkDark: "#a9c4f8",
   },
   green: {
     key: "green",
@@ -19,6 +23,10 @@ export const BRAND_THEMES: Record<BrandKey, BrandTheme> = {
     soft: "#e3f2e9",
     fg: "#ffffff",
     ink: "#0e4d2d",
+    baseDark: "#4fb37c",
+    softDark: "#16291f",
+    fgDark: "#0b1a12",
+    inkDark: "#8fd4ad",
   },
   orange: {
     key: "orange",
@@ -26,6 +34,10 @@ export const BRAND_THEMES: Record<BrandKey, BrandTheme> = {
     soft: "#fdeedd",
     fg: "#ffffff",
     ink: "#9a4d0d",
+    baseDark: "#f0954a",
+    softDark: "#33210f",
+    fgDark: "#1d1206",
+    inkDark: "#f5c08a",
   },
   violet: {
     key: "violet",
@@ -33,6 +45,10 @@ export const BRAND_THEMES: Record<BrandKey, BrandTheme> = {
     soft: "#ece6fb",
     fg: "#ffffff",
     ink: "#452c94",
+    baseDark: "#9b81ea",
+    softDark: "#241d42",
+    fgDark: "#140f26",
+    inkDark: "#c4b3f4",
   },
   rose: {
     key: "rose",
@@ -40,6 +56,10 @@ export const BRAND_THEMES: Record<BrandKey, BrandTheme> = {
     soft: "#fbe4ec",
     fg: "#ffffff",
     ink: "#87264a",
+    baseDark: "#e8799f",
+    softDark: "#3a1d28",
+    fgDark: "#211017",
+    inkDark: "#f2a8c0",
   },
 };
 
@@ -47,14 +67,20 @@ export function brandTheme(key: BrandKey): BrandTheme {
   return BRAND_THEMES[key] ?? BRAND_THEMES.cobalt;
 }
 
-/** Inline style object that activates a brand inside a subtree. */
+/**
+ * Inline style object that activates a brand inside a subtree.
+ *
+ * These land as inline styles, which would otherwise beat the .dark rules in
+ * globals.css, so each value carries both themes and lets light-dark() pick —
+ * driven by the color-scheme that :root / .dark already declare.
+ */
 export function brandVars(key: BrandKey): React.CSSProperties {
   const theme = brandTheme(key);
   return {
-    "--brand": theme.base,
-    "--brand-soft": theme.soft,
-    "--brand-fg": theme.fg,
-    "--brand-ink": theme.ink,
+    "--brand": `light-dark(${theme.base}, ${theme.baseDark})`,
+    "--brand-soft": `light-dark(${theme.soft}, ${theme.softDark})`,
+    "--brand-fg": `light-dark(${theme.fg}, ${theme.fgDark})`,
+    "--brand-ink": `light-dark(${theme.ink}, ${theme.inkDark})`,
   } as React.CSSProperties;
 }
 

@@ -148,7 +148,7 @@ function SlotChip({ slot, selected, onSelect }: SlotChipProps) {
         selected
           ? "border-brand bg-brand text-brand-fg"
           : slot.available
-            ? "border-line bg-white text-ink hover:border-brand/40 hover:bg-brand-soft/50"
+            ? "border-line bg-card text-ink hover:border-brand/40 hover:bg-brand-soft/50"
             : "border-transparent bg-sand-50 text-sand-400 line-through",
         slot.scarce && !selected && slot.available && "border-warn-ink/30 bg-warn/40",
       )}

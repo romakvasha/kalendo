@@ -380,6 +380,7 @@ export const pl = {
   },
 
   onboarding: {
+    untitledCompany: "Moja firma",
     title: "Skonfigurujmy Twoją firmę",
     stepOf: "Krok {current} z {total}",
     skip: "Pomiń",
@@ -814,6 +815,13 @@ export const pl = {
   },
 
   panel: {
+    switcher: {
+      label: "Zmień firmę",
+      title: "Wybierz firmę",
+      yours: "Twoje firmy",
+      demo: "Demo",
+      newCompany: "Nowa firma",
+    },
     dashboard: {
       greeting: "Dzień dobry, {name}",
       subtitle: "{weekday}, {date} · {count} {visits} dziś",
@@ -1420,6 +1428,13 @@ export const pl = {
     profile: "Profil",
     company: "Dane firmy",
     language: "Język",
+    appearance: "Wygląd",
+    theme: {
+      light: "Jasny",
+      dark: "Ciemny",
+      system: "Systemowy",
+      hint: "Dopasuj do ustawień systemu lub wybierz ręcznie.",
+    },
     notifications: "Powiadomienia",
     bookingPage: "Strona rezerwacji",
     integrations: "Integracje",
@@ -1545,6 +1560,7 @@ export const pl = {
   },
 
   toast: {
+    companyCreated: "Firma {name} jest gotowa — witaj w panelu",
     bookingConfirmed: "Rezerwacja potwierdzona",
     bookingCancelled: "Wizyta odwołana",
     rescheduled: "Termin zmieniony",
@@ -1578,6 +1594,7 @@ export const pl = {
     prevDay: "Poprzedni dzień",
     nextDay: "Następny dzień",
     changeLanguage: "Zmień język",
+    toggleTheme: "Zmień motyw",
     notifications: "Powiadomienia",
     userMenu: "Menu konta",
     back: "Wstecz",

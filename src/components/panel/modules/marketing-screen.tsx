@@ -400,7 +400,7 @@ function CampaignModal({
               <p className="text-center text-[11px] text-muted">{senderName}</p>
               <div
                 className={cn(
-                  "max-w-[82%] rounded-2xl rounded-bl-sm bg-white px-3.5 py-2.5",
+                  "max-w-[82%] rounded-2xl rounded-bl-sm bg-card px-3.5 py-2.5",
                   "border border-line text-[14px] leading-5 text-ink shadow-xs",
                 )}
               >

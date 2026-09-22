@@ -24,7 +24,7 @@ import {
   Sheet,
   Switch,
 } from "@/components/ui";
-import { BrandProvider } from "@/components/layout";
+import { BrandProvider, ThemeToggle } from "@/components/layout";
 import {
   clientRecordsForAccount,
   loyaltyOf,
@@ -144,97 +144,115 @@ export function ProfileScreen() {
   ];
 
   return (
-    <div className="pb-8">
-      <div className="pt-safe">
-        <header className="flex items-center gap-4 px-4 pt-6">
-          <Avatar name={account.name} size="xl" />
-          <div className="min-w-0">
-            <h1 className="font-display text-[26px] leading-tight text-ink">
-              {account.name}
-            </h1>
-            <p className="tabular mt-0.5 text-[13px] text-muted">
-              {account.phone}
-            </p>
-          </div>
-        </header>
+    <div className="flex flex-col pb-8 lg:grid lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:pb-0">
+      {/*
+        Identity column. Below lg both wrappers are `display: contents`, so the
+        five blocks stay one phone-width stack in their original order (kept by
+        the order-* classes); from lg up each wrapper becomes a real column.
+      */}
+      <div className="contents lg:block lg:min-w-0">
+        <div className="order-1 pt-safe lg:order-none">
+          <header className="flex items-center gap-4 px-4 pt-6 lg:px-0 lg:pt-0">
+            <Avatar name={account.name} size="xl" />
+            <div className="min-w-0">
+              <h1 className="font-display text-[26px] leading-tight text-ink">
+                {account.name}
+              </h1>
+              <p className="tabular mt-0.5 text-[13px] text-muted">
+                {account.phone}
+              </p>
+            </div>
+          </header>
+        </div>
+
+        <section className="order-4 mt-7 px-4 lg:order-none lg:px-0">
+          <Link
+            href="/signup?type=company"
+            className="surface-flat flex items-center gap-4 bg-sand-50 p-5 transition-colors hover:bg-sand-100"
+          >
+            <span className="min-w-0 flex-1">
+              <span className="font-display block text-[21px] leading-tight text-ink">
+                {t("profile.business.title")}
+              </span>
+              <span className="mt-1 block text-[13px] leading-5 text-muted">
+                {t("profile.business.body")}
+              </span>
+              <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-cobalt">
+                {t("landing.finalCta")}
+                <ArrowUpRight aria-hidden className="size-4" />
+              </span>
+            </span>
+          </Link>
+        </section>
+
+        <div className="order-5 mt-7 px-4 lg:order-none lg:px-0">
+          <Button
+            block
+            variant="ghost"
+            iconLeft={LogOut}
+            className="text-danger hover:bg-danger-soft"
+            onClick={() => {
+              signOut();
+              router.push("/");
+            }}
+          >
+            {t("settings.logOut")}
+          </Button>
+        </div>
       </div>
 
-      <section className="mt-6 px-4">
-        <ul className="surface divide-y divide-line overflow-hidden">
-          {rows.map((row) => (
-            <li key={row.key}>
-              <button
-                type="button"
-                onClick={() => setPanel(row.key)}
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-sand-50"
-              >
-                <span aria-hidden className="text-sand-500 [&_svg]:size-[18px]">
-                  {row.icon}
-                </span>
-                <span className="flex-1 text-[15px] text-ink">{row.label}</span>
-                {row.value ? (
-                  <span className="max-w-[45%] truncate text-[13px] text-muted">
-                    {row.value}
-                  </span>
-                ) : null}
-                <ChevronRight aria-hidden className="size-4 text-sand-400" />
-              </button>
+      {/* Settings column: the rows, then the loyalty cards. */}
+      <div className="contents lg:block lg:min-w-0">
+        <section className="order-2 mt-6 px-4 lg:order-none lg:mt-0 lg:px-0">
+          <ul className="surface divide-y divide-line overflow-hidden">
+            <li>
+              <ThemeToggle variant="row" />
             </li>
-          ))}
-        </ul>
-      </section>
-
-      {loyaltyCards.length ? (
-        <section className="mt-7 px-4">
-          <SectionHeading title={t("profile.loyaltyCards")} />
-          <div className="mt-3 space-y-3">
-            {loyaltyCards.map((card) => (
-              <BrandProvider key={card.tenant.id} brand={card.tenant.brand}>
-                <LoyaltyCard
-                  variant="plain"
-                  tenant={card.tenant}
-                  points={card.points}
-                  rewardAt={card.rewardAt}
-                />
-              </BrandProvider>
+            {rows.map((row) => (
+              <li key={row.key}>
+                <button
+                  type="button"
+                  onClick={() => setPanel(row.key)}
+                  className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-sand-50"
+                >
+                  <span
+                    aria-hidden
+                    className="text-sand-500 [&_svg]:size-[18px]"
+                  >
+                    {row.icon}
+                  </span>
+                  <span className="flex-1 text-[15px] text-ink">
+                    {row.label}
+                  </span>
+                  {row.value ? (
+                    <span className="max-w-[45%] truncate text-[13px] text-muted">
+                      {row.value}
+                    </span>
+                  ) : null}
+                  <ChevronRight aria-hidden className="size-4 text-sand-400" />
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
-      ) : null}
 
-      <section className="mt-7 px-4">
-        <Link
-          href="/signup?type=company"
-          className="surface-flat flex items-center gap-4 bg-sand-50 p-5 transition-colors hover:bg-sand-100"
-        >
-          <span className="min-w-0 flex-1">
-            <span className="font-display block text-[21px] leading-tight text-ink">
-              {t("profile.business.title")}
-            </span>
-            <span className="mt-1 block text-[13px] leading-5 text-muted">
-              {t("profile.business.body")}
-            </span>
-            <span className="mt-2 inline-flex items-center gap-1 text-[13px] font-medium text-cobalt">
-              {t("landing.finalCta")}
-              <ArrowUpRight aria-hidden className="size-4" />
-            </span>
-          </span>
-        </Link>
-      </section>
-
-      <div className="mt-7 px-4">
-        <Button
-          block
-          variant="ghost"
-          iconLeft={LogOut}
-          className="text-danger hover:bg-danger-soft"
-          onClick={() => {
-            signOut();
-            router.push("/");
-          }}
-        >
-          {t("settings.logOut")}
-        </Button>
+        {loyaltyCards.length ? (
+          <section className="order-3 mt-7 px-4 lg:order-none lg:px-0">
+            <SectionHeading title={t("profile.loyaltyCards")} />
+            <div className="mt-3 space-y-3 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
+              {loyaltyCards.map((card) => (
+                <BrandProvider key={card.tenant.id} brand={card.tenant.brand}>
+                  <LoyaltyCard
+                    variant="plain"
+                    tenant={card.tenant}
+                    points={card.points}
+                    rewardAt={card.rewardAt}
+                  />
+                </BrandProvider>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </div>
 
       <Sheet

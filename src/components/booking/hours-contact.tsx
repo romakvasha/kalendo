@@ -25,7 +25,7 @@ export function HoursAndContact({ tenant, className }: HoursAndContactProps) {
           <h2 className="font-display text-[26px] leading-8 text-ink lg:text-[32px]">
             {t("company.openingHours")}
           </h2>
-          <dl className="mt-4 overflow-hidden rounded-xl border border-line bg-white">
+          <dl className="mt-4 overflow-hidden rounded-xl border border-line bg-card">
             {tenant.openingHours.map((entry) => {
               const isToday = entry.weekday === today;
               return (
@@ -118,7 +118,7 @@ function ContactRow({ icon, href, external, label, value }: ContactRowProps) {
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      className="flex items-center gap-3 rounded-lg border border-line bg-white px-4 py-3 transition-colors hover:bg-sand-50"
+      className="flex items-center gap-3 rounded-lg border border-line bg-card px-4 py-3 transition-colors hover:bg-sand-50"
     >
       <span className="grid size-9 shrink-0 place-items-center rounded-md bg-sand-100 text-sand-600 [&_svg]:size-[17px]">
         {icon}

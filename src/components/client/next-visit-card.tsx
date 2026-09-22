@@ -141,7 +141,7 @@ export function NextVisitEmpty() {
 
       <Link
         href="/app/search"
-        className="mt-5 inline-flex h-11 items-center justify-center rounded-md bg-paper px-5 text-[14px] font-medium text-ink transition-colors hover:bg-white"
+        className="mt-5 inline-flex h-11 items-center justify-center rounded-md bg-paper px-5 text-[14px] font-medium text-ink transition-colors hover:bg-card"
       >
         {t("visits.find")}
       </Link>

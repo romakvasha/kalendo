@@ -82,7 +82,7 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
             {categories.slice(0, 3).map((category) => (
               <span
                 key={category.id}
-                className="shrink-0 rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-medium text-sand-700 shadow-xs backdrop-blur-sm"
+                className="shrink-0 rounded-full bg-card/85 px-2.5 py-1 text-[11px] font-medium text-sand-700 shadow-xs backdrop-blur-sm"
               >
                 {tl(category.name)}
               </span>
@@ -237,7 +237,7 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
               return (
                 <li
                   key={feature}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[12.5px] font-medium text-sand-700"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-[12.5px] font-medium text-sand-700"
                 >
                   <Icon aria-hidden className="size-3.5" strokeWidth={1.75} />
                   {t(featureKey(feature))}
@@ -256,7 +256,7 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
             </Link>
             <a
               href={`tel:${tenant.phone.replace(/\s/g, "")}`}
-              className="inline-flex h-12 items-center gap-2 rounded-md border border-line bg-white px-5 text-[15px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50"
+              className="inline-flex h-12 items-center gap-2 rounded-md border border-line bg-card px-5 text-[15px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50"
             >
               <Phone aria-hidden className="size-[18px]" strokeWidth={1.75} />
               {tenant.phone}
@@ -276,9 +276,10 @@ export function CompanyHero({ tenant, categories }: CompanyHeroProps) {
               tone="brand"
               className="aspect-square h-full rounded-2xl"
             />
+            {/* ink/paper swap, so an ink scrim would turn into a light veil in dark. */}
             {extraPhotos > 0 && (
-              <span className="pointer-events-none absolute inset-0 grid place-items-center rounded-2xl bg-ink/35 backdrop-blur-[2px]">
-                <span className="rounded-full bg-white/90 px-3 py-1.5 text-[12.5px] font-medium text-ink shadow-xs">
+              <span className="pointer-events-none absolute inset-0 grid place-items-center rounded-2xl bg-ink/35 backdrop-blur-[2px] dark:bg-paper/55">
+                <span className="rounded-full bg-card/90 px-3 py-1.5 text-[12.5px] font-medium text-ink shadow-xs">
                   {t("company.morePhotos", {
                     count: extraPhotos,
                     photos: tn(extraPhotos, "plurals.photos"),
@@ -303,7 +304,7 @@ interface HeroActionProps {
 
 function HeroAction({ href, external, onClick, icon, children }: HeroActionProps) {
   const className =
-    "flex flex-col items-center justify-center gap-1.5 rounded-lg border border-line bg-white px-2 py-3 text-[12px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50 [&_svg]:size-[18px] [&_svg]:text-sand-600";
+    "flex flex-col items-center justify-center gap-1.5 rounded-lg border border-line bg-card px-2 py-3 text-[12px] font-medium text-ink shadow-xs transition-colors hover:bg-sand-50 [&_svg]:size-[18px] [&_svg]:text-sand-600";
 
   if (href) {
     return (

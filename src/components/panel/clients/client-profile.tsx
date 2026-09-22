@@ -140,7 +140,7 @@ function ActionTile({
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25 focus-visible:ring-offset-1 focus-visible:ring-offset-paper",
     primary
       ? "border-transparent bg-ink text-paper shadow-xs hover:bg-sand-800"
-      : "border-line bg-white text-sand-700 shadow-xs hover:border-line-strong hover:bg-sand-50",
+      : "border-line bg-card text-sand-700 shadow-xs hover:border-line-strong hover:bg-sand-50",
   );
 
   const inner = (

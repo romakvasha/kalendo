@@ -215,7 +215,7 @@ export function CalendarToolbar({
             {pendingCount > 0 ? (
               <span
                 aria-hidden
-                className="absolute top-1 right-1 size-2 rounded-full bg-danger ring-2 ring-white"
+                className="absolute top-1 right-1 size-2 rounded-full bg-danger ring-2 ring-card"
               />
             ) : null}
           </span>

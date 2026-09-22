@@ -81,7 +81,7 @@ export function MonthGrid({
               key={day.date}
               aria-current={isToday ? "date" : undefined}
               className={cn(
-                "group relative flex min-h-[86px] flex-col gap-1 bg-white p-1.5 text-left lg:min-h-[128px] lg:p-2",
+                "group relative flex min-h-[86px] flex-col gap-1 bg-card p-1.5 text-left lg:min-h-[128px] lg:p-2",
                 "transition-colors duration-150 hover:bg-sand-50",
                 "focus-within:ring-2 focus-within:ring-cobalt/30 focus-within:ring-inset",
                 !day.inMonth && "bg-sand-50/60 text-sand-400",
@@ -92,7 +92,7 @@ export function MonthGrid({
                   className={cn(
                     "tabular grid size-6 place-items-center rounded-full text-[12px] font-semibold",
                     isToday
-                      ? "bg-cobalt text-white"
+                      ? "bg-cobalt text-paper"
                       : day.inMonth
                         ? "text-ink"
                         : "text-sand-400",

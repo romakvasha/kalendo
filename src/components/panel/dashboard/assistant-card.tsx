@@ -18,7 +18,7 @@ import {
 } from "./helpers";
 
 const SOLID_BUTTON =
-  "rounded-full border-transparent bg-paper text-ink shadow-none hover:bg-white";
+  "rounded-full border-transparent bg-paper text-ink shadow-none hover:bg-card";
 const GHOST_BUTTON =
   "rounded-full border border-paper/30 text-paper hover:bg-paper/10 active:bg-paper/15";
 
@@ -38,7 +38,7 @@ function AssistantHeading({ note }: { note?: string }) {
   const t = useI18n().t;
   return (
     <div className="flex items-center gap-2.5">
-      <span className="inline-grid size-8 shrink-0 place-items-center rounded-full bg-cobalt text-white">
+      <span className="inline-grid size-8 shrink-0 place-items-center rounded-full bg-cobalt text-paper">
         <Sparkles className="size-4" aria-hidden />
       </span>
       <span className="text-[15px] font-semibold text-paper">

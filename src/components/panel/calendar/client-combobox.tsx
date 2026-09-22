@@ -80,7 +80,7 @@ export function ClientCombobox({
     const client = clients.find((entry) => entry.id === value.clientId);
     return (
       <Field label={t("common.client")} required>
-        <div className="flex items-center gap-3 rounded-md border border-line bg-white px-3 py-2">
+        <div className="flex items-center gap-3 rounded-md border border-line bg-card px-3 py-2">
           <Avatar name={value.name} size="sm" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-[14px] font-medium text-ink">
@@ -190,7 +190,7 @@ export function ClientCombobox({
           <ul
             id={listId}
             role="listbox"
-            className="absolute inset-x-0 top-[calc(100%+4px)] z-40 max-h-64 overflow-y-auto rounded-md border border-line bg-white py-1 shadow-lg"
+            className="absolute inset-x-0 top-[calc(100%+4px)] z-40 max-h-64 overflow-y-auto rounded-md border border-line bg-card py-1 shadow-lg"
           >
             {matches.map((client, index) => (
               <li key={client.id}>

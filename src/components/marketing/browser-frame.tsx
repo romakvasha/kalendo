@@ -14,7 +14,7 @@ export function BrowserFrame({
   return (
     <div
       className={cn(
-        "w-full overflow-hidden rounded-xl border border-line bg-white shadow-lg sm:rounded-2xl",
+        "w-full overflow-hidden rounded-xl border border-line bg-card shadow-lg sm:rounded-2xl",
         className,
       )}
       {...props}
@@ -25,7 +25,7 @@ export function BrowserFrame({
           <span className="size-2.5 rounded-full bg-sand-300" />
           <span className="size-2.5 rounded-full bg-sand-300" />
         </span>
-        <span className="ml-1 flex h-6 min-w-0 flex-1 items-center rounded-full border border-line bg-white px-3 text-[11px] text-sand-500">
+        <span className="ml-1 flex h-6 min-w-0 flex-1 items-center rounded-full border border-line bg-card px-3 text-[11px] text-sand-500">
           <span className="truncate">{url}</span>
         </span>
       </div>

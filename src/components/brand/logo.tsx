@@ -33,7 +33,7 @@ export function KalendoLogo({
       ? "bg-paper text-ink"
       : tone === "brand"
         ? "bg-brand text-brand-fg"
-        : "bg-cobalt text-white";
+        : "bg-cobalt text-paper";
 
   const wordTone = tone === "paper" ? "text-paper" : "text-ink";
 

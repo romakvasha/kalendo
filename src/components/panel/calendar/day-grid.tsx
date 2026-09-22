@@ -299,13 +299,13 @@ export function DayGrid({
   return (
     <div className="thin-scrollbar relative h-[calc(100dvh-20rem)] min-h-[360px] overflow-auto overscroll-contain lg:h-[calc(100dvh-14rem)]">
       <div className="min-w-full" style={{ width: totalPx }}>
-        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm">
+        <div className="sticky top-0 z-30 bg-card/95 backdrop-blur-sm">
           {showDateHeaders ? (
             <div
               className="grid border-b border-line"
               style={{ gridTemplateColumns: template }}
             >
-              <div className="sticky left-0 z-10 bg-white" />
+              <div className="sticky left-0 z-10 bg-card" />
               {groups.map((group, index) => (
                 <div
                   key={group.date}
@@ -331,7 +331,7 @@ export function DayGrid({
             className="grid border-b border-line"
             style={{ gridTemplateColumns: template }}
           >
-            <div className="sticky left-0 z-10 grid place-items-center border-r border-line bg-white">
+            <div className="sticky left-0 z-10 grid place-items-center border-r border-line bg-card">
               <IconButton
                 size="sm"
                 variant="ghost"
@@ -404,7 +404,7 @@ export function DayGrid({
             ))}
           </div>
 
-          <div className="sticky left-0 z-20 border-r border-line bg-white">
+          <div className="sticky left-0 z-20 border-r border-line bg-card">
             {hours.map((hour) => (
               <span
                 key={hour.minutes}
@@ -419,7 +419,7 @@ export function DayGrid({
 
             {nowY !== null ? (
               <span
-                className="tabular absolute left-1 rounded-xs bg-cobalt px-1.5 py-0.5 text-[10px] leading-4 font-semibold text-white"
+                className="tabular absolute left-1 rounded-xs bg-cobalt px-1.5 py-0.5 text-[10px] leading-4 font-semibold text-paper"
                 style={{ top: nowY - 11 }}
               >
                 {timeLabel(NOW_MINUTES)}

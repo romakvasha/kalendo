@@ -55,7 +55,7 @@ export function AccountTypeChoice({ value, onChange }: AccountTypeChoiceProps) {
             <label
               key={option.value}
               className={cn(
-                "relative flex cursor-pointer flex-col rounded-lg border bg-white p-4 text-left",
+                "relative flex cursor-pointer flex-col rounded-lg border bg-card p-4 text-left",
                 "transition-[border-color,box-shadow] duration-150",
                 "focus-within:ring-2 focus-within:ring-cobalt/25 focus-within:ring-offset-1",
                 selected
@@ -78,7 +78,7 @@ export function AccountTypeChoice({ value, onChange }: AccountTypeChoiceProps) {
                   "absolute top-3.5 right-3.5 grid size-5 place-items-center rounded-full border transition-colors duration-150",
                   selected
                     ? "border-ink bg-ink text-paper"
-                    : "border-line-strong bg-white",
+                    : "border-line-strong bg-card",
                 )}
               >
                 {selected ? <Check className="size-3" strokeWidth={3} /> : null}

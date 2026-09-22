@@ -206,13 +206,13 @@ export function StepDetails({
                 "flex cursor-pointer items-start gap-3 rounded-lg border px-3.5 py-3 transition-colors duration-150",
                 draft.paymentChoice === option.choice
                   ? "border-ink bg-sand-50"
-                  : "border-line bg-white hover:border-line-strong",
+                  : "border-line bg-card hover:border-line-strong",
               )}
             >
               <input
                 type="radio"
                 name="payment-choice"
-                className="mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-line-strong bg-white transition-all duration-150 checked:border-[6px] checked:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25"
+                className="mt-0.5 size-5 shrink-0 cursor-pointer appearance-none rounded-full border border-line-strong bg-card transition-all duration-150 checked:border-[6px] checked:border-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25"
                 checked={draft.paymentChoice === option.choice}
                 onChange={() => onDraftChange({ paymentChoice: option.choice })}
               />
@@ -243,7 +243,7 @@ export function StepDetails({
         )}
 
         {/* ------------------------------------------------- voucher */}
-        <div className="mt-3 overflow-hidden rounded-lg border border-line bg-white">
+        <div className="mt-3 overflow-hidden rounded-lg border border-line bg-card">
           <button
             type="button"
             aria-expanded={codeOpen}

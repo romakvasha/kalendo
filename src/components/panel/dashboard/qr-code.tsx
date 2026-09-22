@@ -64,8 +64,9 @@ export function QrCode({ value, className, title }: QrCodeProps) {
       shapeRendering="crispEdges"
       role="img"
       aria-label={title}
-      className={cn("block h-auto w-full text-ink", className)}
+      className={cn("block h-auto w-full", className)}
     >
+      {/* A QR stays dark-on-light in both themes: scanners and printers expect it. */}
       <rect width={span} height={span} fill="#ffffff" />
       {range(SIZE).map((y) =>
         range(SIZE).map((x) =>
@@ -76,7 +77,7 @@ export function QrCode({ value, className, title }: QrCodeProps) {
               y={y + QUIET}
               width={1}
               height={1}
-              fill="currentColor"
+              fill="#1a1713"
             />
           ) : null,
         ),

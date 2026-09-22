@@ -21,7 +21,7 @@ export function MobileTabBar({ variant, className }: MobileTabBarProps) {
     <nav
       aria-label={t(isPanel ? "nav.panel" : "common.menu")}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 pb-safe backdrop-blur-md",
+        "fixed inset-x-0 bottom-0 z-40 border-t border-line bg-card/95 pb-safe backdrop-blur-md",
         className,
       )}
     >

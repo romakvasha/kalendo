@@ -61,8 +61,8 @@ export function Stepper({
                 complete
                   ? "border-ink bg-ink text-paper"
                   : active
-                    ? "border-ink bg-white text-ink"
-                    : "border-line-strong bg-white text-sand-400",
+                    ? "border-ink bg-card text-ink"
+                    : "border-line-strong bg-card text-sand-400",
               )}
             >
               {complete ? (

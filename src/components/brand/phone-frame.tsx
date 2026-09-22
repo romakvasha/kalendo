@@ -54,7 +54,7 @@ export function PhoneFrame({
 
       <div
         className={cn(
-          "w-full shrink-0 overflow-hidden rounded-phone border border-line bg-white shadow-phone sm:w-[375px]",
+          "w-full shrink-0 overflow-hidden rounded-phone border border-line bg-card shadow-phone sm:w-[375px]",
           screenClassName,
         )}
       >

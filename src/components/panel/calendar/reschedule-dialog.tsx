@@ -79,7 +79,7 @@ export function RescheduleDialog({
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25",
                   time === slot.time
                     ? "border-ink bg-ink text-paper"
-                    : "border-line bg-white text-ink hover:border-line-strong hover:bg-sand-50",
+                    : "border-line bg-card text-ink hover:border-line-strong hover:bg-sand-50",
                 )}
               >
                 {slot.time}

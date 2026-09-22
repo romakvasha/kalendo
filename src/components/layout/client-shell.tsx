@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ClientHeader } from "./client-header";
 import { MobileTabBar } from "./mobile-tab-bar";
 import { cn } from "@/lib/utils";
 
@@ -7,21 +8,26 @@ export interface ClientShellProps {
   className?: string;
 }
 
+/**
+ * Phone-first, but a real web app on a wide screen: below lg the bottom tab bar
+ * drives navigation, from lg up the top header takes over and the content gets a
+ * readable centred column rather than a 440px phone floating in empty space.
+ */
 export function ClientShell({ children, className }: ClientShellProps) {
   return (
-    <div className="min-h-dvh bg-paper lg:flex lg:min-h-dvh lg:items-center lg:justify-center lg:bg-board lg:py-8">
-      <div className="flex w-full flex-col lg:h-[calc(100dvh-4rem)] lg:max-h-[920px] lg:w-[440px] lg:overflow-hidden lg:rounded-3xl lg:border lg:border-line lg:bg-paper lg:shadow-xl">
-        <main
-          className={cn(
-            "thin-scrollbar flex-1 pb-24 lg:overflow-y-auto lg:pb-4",
-            className,
-          )}
-        >
-          {children}
-        </main>
+    <div className="flex min-h-dvh flex-col bg-paper">
+      <ClientHeader />
 
-        <MobileTabBar variant="client" className="lg:static lg:shrink-0" />
-      </div>
+      <main
+        className={cn(
+          "flex-1 pb-24 lg:mx-auto lg:w-full lg:max-w-[1080px] lg:px-6 lg:pb-16 lg:pt-8",
+          className,
+        )}
+      >
+        {children}
+      </main>
+
+      <MobileTabBar variant="client" className="lg:hidden" />
     </div>
   );
 }

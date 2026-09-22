@@ -52,7 +52,7 @@ export function StepHours({ hours, onChange }: StepHoursProps) {
           return (
             <li
               key={day.weekday}
-              className="rounded-lg border border-line bg-white p-3 sm:flex sm:items-center sm:gap-4 sm:py-2.5"
+              className="rounded-lg border border-line bg-card p-3 sm:flex sm:items-center sm:gap-4 sm:py-2.5"
             >
               <div className="flex items-center justify-between gap-3 sm:w-[190px] sm:shrink-0">
                 <span className="text-[14px] font-medium text-ink">{name}</span>

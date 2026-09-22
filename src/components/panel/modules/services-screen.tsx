@@ -320,7 +320,7 @@ function Services({ tenant }: { tenant: Tenant }) {
                                   name={member.name}
                                   color={member.avatarColor}
                                   size="xs"
-                                  className="ring-2 ring-white"
+                                  className="ring-2 ring-card"
                                 />
                               ))}
                           </div>

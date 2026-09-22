@@ -194,7 +194,7 @@ export function CompanyPage({ tenant }: CompanyPageProps) {
       </div>
 
       {/* ------------------------------------- mobile sticky action */}
-      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white/95 backdrop-blur-md lg:hidden">
+      <div className="pb-safe fixed inset-x-0 bottom-0 z-30 border-t border-line bg-card/95 backdrop-blur-md lg:hidden">
         <div className="px-4 py-3">
           <Link
             href={bookHref(tenant.slug, {

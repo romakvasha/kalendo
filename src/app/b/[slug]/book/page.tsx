@@ -1,14 +1,13 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
 
 import { BookingFlow } from "@/components/booking";
 import { Spinner } from "@/components/ui";
 import { SEED_STATE, getTenantBySlug } from "@/lib/data";
+import { CustomTenantBooking } from "../_components/custom-tenant";
 
 export default async function BookPage(props: PageProps<"/b/[slug]/book">) {
   const { slug } = await props.params;
   const tenant = getTenantBySlug(SEED_STATE, slug);
-  if (!tenant) notFound();
 
   return (
     <Suspense
@@ -18,7 +17,11 @@ export default async function BookPage(props: PageProps<"/b/[slug]/book">) {
         </div>
       }
     >
-      <BookingFlow tenant={tenant} />
+      {tenant ? (
+        <BookingFlow tenant={tenant} />
+      ) : (
+        <CustomTenantBooking slug={slug} />
+      )}
     </Suspense>
   );
 }

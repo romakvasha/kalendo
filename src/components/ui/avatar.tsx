@@ -47,10 +47,13 @@ export function Avatar({
       ]
     ];
 
+  // The initials lean hard on ink rather than on the seed colour: at 78% the
+  // hue looked right but measured 3.7:1 on the tinted background in light and
+  // 4.0:1 in dark. Mixing toward ink keeps the identity and clears 4.5:1 in both.
   const tinted = color
     ? {
-        backgroundColor: `color-mix(in oklab, ${color} 16%, white)`,
-        color: `color-mix(in oklab, ${color} 78%, var(--color-ink))`,
+        backgroundColor: `color-mix(in oklab, ${color} 16%, var(--color-card))`,
+        color: `color-mix(in oklab, ${color} 45%, var(--color-ink))`,
       }
     : undefined;
 
@@ -85,7 +88,7 @@ export function Avatar({
         <span
           aria-hidden
           className={cn(
-            "absolute right-0 bottom-0 rounded-full border-2 border-white bg-success",
+            "absolute right-0 bottom-0 rounded-full border-2 border-card bg-success",
             size === "xs" || size === "sm" ? "size-2.5" : "size-3",
           )}
         />

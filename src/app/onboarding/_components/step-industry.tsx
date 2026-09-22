@@ -54,7 +54,7 @@ export function StepIndustry({
               <label
                 key={industry}
                 className={cn(
-                  "relative flex cursor-pointer flex-col justify-between rounded-lg border bg-white p-3.5 sm:p-4",
+                  "relative flex cursor-pointer flex-col justify-between rounded-lg border bg-card p-3.5 sm:p-4",
                   "transition-[border-color,box-shadow] duration-150",
                   "focus-within:ring-2 focus-within:ring-cobalt/25 focus-within:ring-offset-1",
                   selected
@@ -77,7 +77,7 @@ export function StepIndustry({
                     "absolute top-3 right-3 grid size-5 place-items-center rounded-full border transition-colors duration-150",
                     selected
                       ? "border-ink bg-ink text-paper"
-                      : "border-line-strong bg-white",
+                      : "border-line-strong bg-card",
                   )}
                 >
                   {selected ? <Check className="size-3" strokeWidth={3} /> : null}
@@ -97,7 +97,7 @@ export function StepIndustry({
         </div>
       </div>
 
-      <div className="mt-5 rounded-lg border border-line bg-white p-4">
+      <div className="mt-5 rounded-lg border border-line bg-card p-4">
         <div className="flex items-start gap-3">
           <span className="grid size-9 shrink-0 place-items-center rounded-sm bg-cobalt-soft text-cobalt">
             <Link2 aria-hidden className="size-4" strokeWidth={1.75} />

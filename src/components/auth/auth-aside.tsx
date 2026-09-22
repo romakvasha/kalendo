@@ -29,7 +29,7 @@ export function AuthAside({ compact = false }: AuthAsideProps) {
 
   return (
     <div className="flex h-full flex-col">
-      <span className="inline-flex w-fit items-center rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-paper/80 uppercase">
+      <span className="inline-flex w-fit items-center rounded-full border border-paper/15 bg-paper/10 px-3 py-1 text-[11px] font-medium tracking-[0.08em] text-paper/80 uppercase">
         {t("landing.footer.forBusiness")}
       </span>
 
@@ -63,7 +63,7 @@ export function AuthAside({ compact = false }: AuthAsideProps) {
         </div>
       )}
 
-      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 text-[12px] text-paper/55">
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-paper/10 pt-5 text-[12px] text-paper/55">
         <span>{t("landing.platforms")}</span>
         <span>{LOCALES.map((locale) => LOCALE_LABELS[locale].name).join(" · ")}</span>
       </div>

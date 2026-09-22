@@ -43,7 +43,7 @@ export function BookingFloatCard({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "w-full rounded-lg border border-line bg-white p-4 shadow-lg",
+        "w-full rounded-lg border border-line bg-card p-4 shadow-lg",
         className,
       )}
     >
@@ -85,13 +85,13 @@ export function AutomationFloatCard({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "w-full rounded-lg bg-cobalt p-4 text-white shadow-lg",
+        "w-full rounded-lg bg-cobalt p-4 text-paper shadow-lg",
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <BellRing aria-hidden className="size-4 text-white/80" strokeWidth={1.75} />
-        <p className="text-[11px] font-medium tracking-[0.06em] text-white/75 uppercase">
+        <BellRing aria-hidden className="size-4 text-paper/80" strokeWidth={1.75} />
+        <p className="text-[11px] font-medium tracking-[0.06em] text-paper/75 uppercase">
           {t("landing.float.autoTitle")}
         </p>
       </div>
@@ -112,7 +112,7 @@ export function RevenueFloatCard({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "w-full rounded-lg border border-line bg-white p-4 shadow-lg",
+        "w-full rounded-lg border border-line bg-card p-4 shadow-lg",
         className,
       )}
     >

@@ -111,7 +111,7 @@ export function OtpInput({
           aria-label={t("a11y.codeDigit", { n: index + 1 })}
           aria-invalid={invalid || undefined}
           className={cn(
-            "tabular h-13 w-full min-w-0 rounded-md border bg-white text-center text-[20px] font-medium text-ink",
+            "tabular h-13 w-full min-w-0 rounded-md border bg-card text-center text-[20px] font-medium text-ink",
             "transition-[border-color,box-shadow] duration-150",
             "focus-visible:border-cobalt focus-visible:ring-2 focus-visible:ring-cobalt/20 focus-visible:outline-none",
             invalid ? "border-danger bg-danger-soft/40" : "border-line",

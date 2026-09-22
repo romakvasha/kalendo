@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-import { usePanelSession } from "@/components/layout";
+import { ThemeToggle, usePanelSession } from "@/components/layout";
 import {
   Badge,
   Button,
@@ -525,6 +525,7 @@ function BookingSection({ tenant, onPatch }: SectionProps) {
                     )}
                   >
                     {active && (
+                      /* The swatch is a fixed brand colour in both themes, so the tick stays white. */
                       <Check
                         aria-hidden
                         className="size-4 text-white"
@@ -537,7 +538,7 @@ function BookingSection({ tenant, onPatch }: SectionProps) {
             </div>
           </fieldset>
 
-          <div className="rounded-xl border border-line bg-white p-4">
+          <div className="rounded-xl border border-line bg-card p-4">
             <p className="text-[11px] tracking-[0.08em] text-muted uppercase">
               {t("common.preview")}
             </p>
@@ -832,65 +833,80 @@ function LanguagesSection() {
   }
 
   return (
-    <Card>
-      <CardHeader bordered>
-        <CardTitle as="h2" hint={t("settings.languagesHint")}>
-          {t("settings.language")}
-        </CardTitle>
-      </CardHeader>
+    <div className="flex flex-col gap-3">
+      <Card>
+        <CardHeader bordered>
+          <CardTitle as="h2" hint={t("settings.languagesHint")}>
+            {t("settings.language")}
+          </CardTitle>
+        </CardHeader>
 
-      <CardBody className="flex flex-col gap-5">
-        <fieldset className="flex flex-col gap-2">
-          <legend className="mb-2 text-[13px] font-medium text-sand-700">
-            {t("settings.offeredLanguages")}
-          </legend>
-          {LOCALES.map((locale) => (
-            <label
-              key={locale}
-              className="surface-flat flex cursor-pointer items-center gap-3 p-3.5"
-            >
-              <Checkbox
-                checked={offered.includes(locale)}
-                disabled={offered.length === 1 && offered.includes(locale)}
-                onChange={(event) => toggle(locale, event.target.checked)}
-              />
-              <span className="min-w-0 flex-1">
-                <span className="block text-[14px] text-ink">
-                  {LOCALE_LABELS[locale].name}
+        <CardBody className="flex flex-col gap-5">
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-2 text-[13px] font-medium text-sand-700">
+              {t("settings.offeredLanguages")}
+            </legend>
+            {LOCALES.map((locale) => (
+              <label
+                key={locale}
+                className="surface-flat flex cursor-pointer items-center gap-3 p-3.5"
+              >
+                <Checkbox
+                  checked={offered.includes(locale)}
+                  disabled={offered.length === 1 && offered.includes(locale)}
+                  onChange={(event) => toggle(locale, event.target.checked)}
+                />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[14px] text-ink">
+                    {LOCALE_LABELS[locale].name}
+                  </span>
+                  <span className="block text-[12px] text-muted">
+                    {LOCALE_LABELS[locale].short}
+                  </span>
                 </span>
-                <span className="block text-[12px] text-muted">
-                  {LOCALE_LABELS[locale].short}
-                </span>
-              </span>
-              {locale === fallback && (
-                <Badge size="sm" tone="brand">
-                  {t("settings.defaultLanguage")}
-                </Badge>
-              )}
-            </label>
-          ))}
-        </fieldset>
+                {locale === fallback && (
+                  <Badge size="sm" tone="brand">
+                    {t("settings.defaultLanguage")}
+                  </Badge>
+                )}
+              </label>
+            ))}
+          </fieldset>
 
-        <Field
-          label={t("settings.defaultLanguage")}
-          htmlFor="default-language"
-          hint={t("settings.defaultLanguageHint")}
-        >
-          <Select
-            id="default-language"
-            value={fallback}
-            onChange={(event) => {
-              setFallback(event.target.value as Locale);
-              toast.success(t("toast.saved"));
-            }}
-            options={offered.map((locale) => ({
-              value: locale,
-              label: LOCALE_LABELS[locale].name,
-            }))}
-          />
-        </Field>
-      </CardBody>
-    </Card>
+          <Field
+            label={t("settings.defaultLanguage")}
+            htmlFor="default-language"
+            hint={t("settings.defaultLanguageHint")}
+          >
+            <Select
+              id="default-language"
+              value={fallback}
+              onChange={(event) => {
+                setFallback(event.target.value as Locale);
+                toast.success(t("toast.saved"));
+              }}
+              options={offered.map((locale) => ({
+                value: locale,
+                label: LOCALE_LABELS[locale].name,
+              }))}
+            />
+          </Field>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader bordered>
+          <CardTitle as="h2">{t("settings.appearance")}</CardTitle>
+        </CardHeader>
+
+        <CardBody className="flex flex-col gap-2.5">
+          <ThemeToggle variant="segmented" />
+          <p className="text-[13px] leading-5 text-muted">
+            {t("settings.theme.hint")}
+          </p>
+        </CardBody>
+      </Card>
+    </div>
   );
 }
 

@@ -23,12 +23,12 @@ const VARIANTS: Record<ButtonVariant, string> = {
   brand:
     "bg-brand text-brand-fg shadow-xs hover:bg-brand/90 active:scale-[0.98] focus-visible:ring-brand/30",
   secondary:
-    "bg-white text-ink border border-line shadow-xs hover:bg-sand-50 hover:border-line-strong",
+    "bg-card text-ink border border-line shadow-xs hover:bg-sand-50 hover:border-line-strong",
   ghost: "bg-transparent text-ink hover:bg-sand-100 active:bg-sand-200",
   danger:
-    "bg-danger text-white shadow-xs hover:bg-danger/90 focus-visible:ring-danger/30",
+    "bg-danger text-paper shadow-xs hover:bg-danger/90 focus-visible:ring-danger/30",
   success:
-    "bg-success text-white shadow-xs hover:bg-success/90 focus-visible:ring-success/30",
+    "bg-success text-paper shadow-xs hover:bg-success/90 focus-visible:ring-success/30",
   outline:
     "bg-transparent text-ink border border-line hover:bg-sand-100 hover:border-line-strong",
 };
@@ -123,10 +123,10 @@ export type IconButtonSize = "sm" | "md";
 
 const ICON_BUTTON_VARIANTS: Record<IconButtonVariant, string> = {
   secondary:
-    "bg-white text-ink border border-line shadow-xs hover:bg-sand-50 hover:border-line-strong",
+    "bg-card text-ink border border-line shadow-xs hover:bg-sand-50 hover:border-line-strong",
   ghost: "bg-transparent text-sand-600 hover:bg-sand-100 hover:text-ink",
   brand: "bg-brand text-brand-fg shadow-xs hover:bg-brand/90 active:scale-[0.96]",
-  danger: "bg-danger-soft text-danger hover:bg-danger hover:text-white",
+  danger: "bg-danger-soft text-danger hover:bg-danger hover:text-paper",
 };
 
 export interface IconButtonProps

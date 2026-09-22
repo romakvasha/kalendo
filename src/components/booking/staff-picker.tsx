@@ -84,7 +84,7 @@ function StaffCard({
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-1 focus-visible:ring-offset-paper",
         selected
           ? "border-brand bg-brand-soft/45 ring-1 ring-brand"
-          : "border-line bg-white hover:border-line-strong hover:bg-sand-50",
+          : "border-line bg-card hover:border-line-strong hover:bg-sand-50",
       )}
     >
       {media}

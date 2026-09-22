@@ -260,7 +260,7 @@ function ClientCard({ client }: { client: Client }) {
 }
 
 const BACK_LINK = cn(
-  "inline-grid size-11 shrink-0 place-items-center rounded-md border border-line bg-white text-ink shadow-xs",
+  "inline-grid size-11 shrink-0 place-items-center rounded-md border border-line bg-card text-ink shadow-xs",
   "transition-colors duration-150 hover:border-line-strong hover:bg-sand-50",
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt/25 focus-visible:ring-offset-1 focus-visible:ring-offset-paper",
 );

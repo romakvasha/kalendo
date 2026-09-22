@@ -11,7 +11,6 @@ import { useI18n } from "@/lib/i18n";
 import type { Industry } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import {
-  demoTenantId,
   seededHours,
   seededServices,
   slugify,
@@ -51,26 +50,41 @@ const COPY_KEYS: Record<StepKey, { title: string; lead: string }> = {
 
 const INITIAL_INDUSTRY: Industry = "hair";
 
-export function OnboardingWizard() {
+export interface OnboardingWizardProps {
+  /** Carried over from the signup form so step 1 starts filled in. */
+  initialName?: string;
+  initialIndustry?: Industry;
+  initialPhone?: string;
+}
+
+export function OnboardingWizard({
+  initialName,
+  initialIndustry,
+  initialPhone,
+}: OnboardingWizardProps) {
   const { t, tl } = useI18n();
   const router = useRouter();
   const hydrated = useHydrated();
   const account = useKalendo((state) => state.account);
-  const signInAsCompany = useKalendo((state) => state.signInAsCompany);
+  const createTenant = useKalendo((state) => state.createTenant);
 
   const [index, setIndex] = useState(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [draft, setDraft] = useState<OnboardingDraft>(() => ({
-    companyName: "",
-    city: "",
-    address: "",
-    phone: "",
-    industry: INITIAL_INDUSTRY,
-    slug: slugify(""),
-    slugEdited: false,
-    services: seededServices(INITIAL_INDUSTRY, tl),
-    hours: seededHours(INITIAL_INDUSTRY),
-  }));
+  const [draft, setDraft] = useState<OnboardingDraft>(() => {
+    const industry = initialIndustry ?? INITIAL_INDUSTRY;
+    const companyName = initialName ?? "";
+    return {
+      companyName,
+      city: "",
+      address: "",
+      phone: initialPhone ?? "",
+      industry,
+      slug: slugify(companyName),
+      slugEdited: false,
+      services: seededServices(industry, tl),
+      hours: seededHours(industry),
+    };
+  });
 
   // null means "still following the signed-in owner", which only arrives
   // after the persisted store rehydrates.
@@ -116,10 +130,67 @@ export function OnboardingWizard() {
     setExtraMembers(next.filter((member) => !member.owner));
   };
 
+  /**
+   * The wizard can be skipped at any step, so every field is hardened here:
+   * a company is only ever created with a name, a slug, at least one service
+   * and an owner. createTenant signs the new company's account in and makes
+   * its tenant the active one, so /panel opens on it.
+   */
   const finish = () => {
-    // signInAsCompany also makes that tenant the active one for the panel.
-    signInAsCompany(demoTenantId(draft.industry));
-    toast.success(t("toast.companyReady"));
+    const name = draft.companyName.trim() || t("onboarding.untitledCompany");
+
+    const services = draft.services
+      .filter((service) => service.name.trim())
+      .map((service) => ({
+        name: service.name.trim(),
+        durationMin: service.durationMin,
+        price: service.price,
+      }));
+
+    // Everything deleted on step 3: keep the company bookable with the first
+    // service of its industry's prefilled price list.
+    const fallbackService = seededServices(draft.industry, tl)[0];
+    if (!services.length && fallbackService) {
+      services.push({
+        name: fallbackService.name,
+        durationMin: fallbackService.durationMin,
+        price: fallbackService.price,
+      });
+    }
+
+    const hours = draft.hours.length ? draft.hours : seededHours(draft.industry);
+
+    const members = team
+      .filter((member) => member.name.trim())
+      .map((member) => ({
+        name: member.name.trim(),
+        role: member.role.trim() || t("onboarding.owner"),
+        owner: member.owner,
+      }));
+
+    // The owner row is blank until the account rehydrates; without it the
+    // company would have no staff and nothing could be booked.
+    if (!members.some((member) => member.owner)) {
+      members.unshift({
+        name: account?.name?.trim() || name,
+        role: t("onboarding.owner"),
+        owner: true,
+      });
+    }
+
+    const tenant = createTenant({
+      name,
+      slug: draft.slug.trim() || slugify(name),
+      city: draft.city.trim(),
+      address: draft.address.trim(),
+      phone: draft.phone.trim(),
+      industry: draft.industry,
+      services,
+      hours,
+      team: members,
+    });
+
+    toast.success(t("toast.companyCreated", { name: tenant.name }));
     router.push("/panel");
   };
 

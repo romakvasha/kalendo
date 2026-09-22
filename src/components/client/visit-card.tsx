@@ -43,8 +43,8 @@ export function VisitCard({
   const pending = appointment.status === "pending";
 
   return (
-    <article className="surface p-4">
-      <div className="flex gap-3">
+    <article className="surface p-4 lg:flex lg:items-center lg:gap-4">
+      <div className="flex gap-3 lg:min-w-0 lg:flex-1">
         <DateChip iso={appointment.start} />
 
         <div className="min-w-0 flex-1">
@@ -90,7 +90,7 @@ export function VisitCard({
         </div>
       </div>
 
-      <div className="mt-3 flex items-stretch divide-x divide-line border-t border-line pt-2">
+      <div className="mt-3 flex items-stretch divide-x divide-line border-t border-line pt-2 lg:mt-0 lg:w-64 lg:shrink-0 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-1">
         <ActionTile
           icon={<CalendarClock />}
           label={t("visits.short.reschedule")}
@@ -158,7 +158,7 @@ export function HistoryRow({
 
       <Link
         href={bookAgain}
-        className="mt-3 inline-flex h-9 items-center justify-center rounded-md border border-line bg-white px-3.5 text-[13px] font-medium text-ink shadow-xs transition-colors hover:border-line-strong hover:bg-sand-50"
+        className="mt-3 inline-flex h-9 items-center justify-center rounded-md border border-line bg-card px-3.5 text-[13px] font-medium text-ink shadow-xs transition-colors hover:border-line-strong hover:bg-sand-50"
       >
         {t("visits.bookAgain")}
       </Link>

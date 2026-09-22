@@ -40,7 +40,7 @@ export function PhotoPlaceholder({
         className="size-7 text-sand-400"
       />
       {label ? (
-        <span className="absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-medium text-sand-700 shadow-xs backdrop-blur-sm">
+        <span className="absolute bottom-2 left-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-card/85 px-2.5 py-1 text-[11px] font-medium text-sand-700 shadow-xs backdrop-blur-sm">
           {label}
         </span>
       ) : null}

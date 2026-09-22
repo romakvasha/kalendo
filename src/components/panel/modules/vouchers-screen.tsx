@@ -352,7 +352,7 @@ function GiftTile({
         aria-hidden
         className={cn(
           "pointer-events-none absolute -top-10 -right-10 size-32 rounded-full",
-          used ? "bg-white/40" : "bg-white/10",
+          used ? "bg-card/40" : "bg-brand-fg/10",
         )}
       />
 
@@ -384,8 +384,8 @@ function GiftTile({
           className={cn(
             "tabular rounded-md border px-3 py-2 text-[15px] font-semibold tracking-[0.12em]",
             used
-              ? "border-line-strong bg-white/60"
-              : "border-white/25 bg-white/10",
+              ? "border-line-strong bg-card/60"
+              : "border-brand-fg/25 bg-brand-fg/10",
           )}
         >
           {voucher.code}

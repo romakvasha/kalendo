@@ -128,10 +128,10 @@ export function SearchScreen() {
   const suggestions = [...new Set([...recent, ...visited])].slice(0, 8);
 
   return (
-    <div className="pb-8">
-      <div className="pt-safe sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur-md">
+    <div className="pb-8 lg:pb-0">
+      <div className="pt-safe sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur-md lg:top-[65px]">
         <form
-          className="flex items-center gap-2 px-4 pt-3 pb-3"
+          className="flex items-center gap-2 px-4 pt-3 pb-3 lg:max-w-[560px] lg:px-0 lg:pt-4"
           onSubmit={(event) => {
             event.preventDefault();
             remember(query);
@@ -169,7 +169,7 @@ export function SearchScreen() {
           </div>
         </form>
 
-        <ChipRow className="px-4 pb-3">
+        <ChipRow className="px-4 pb-3 lg:flex-wrap lg:overflow-visible lg:px-0">
           <Chip active={category === "all"} onClick={() => setCategory("all")}>
             {t("common.all")}
           </Chip>
@@ -186,7 +186,7 @@ export function SearchScreen() {
       </div>
 
       {!hasQuery && suggestions.length ? (
-        <section className="px-4 pt-5">
+        <section className="px-4 pt-5 lg:px-0">
           <SectionHeading title={t("discover.recent")} />
           <ChipRow className="mt-3 flex-wrap gap-2 overflow-visible">
             {suggestions.map((item) => (
@@ -206,6 +206,7 @@ export function SearchScreen() {
 
       {empty ? (
         <EmptyState
+          className="lg:py-24"
           icon={Search}
           title={t("discover.noResults")}
           body={t("discover.noResultsBody")}
@@ -213,9 +214,9 @@ export function SearchScreen() {
       ) : null}
 
       {tenants.length ? (
-        <section className="px-4 pt-6">
+        <section className="px-4 pt-6 lg:px-0">
           <SectionHeading title={t("discover.companies")} />
-          <div className="mt-3 space-y-2">
+          <div className="mt-3 space-y-2 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 xl:grid-cols-3">
             {tenants.map((tenant) => (
               <TenantRow
                 key={tenant.id}
@@ -228,9 +229,9 @@ export function SearchScreen() {
       ) : null}
 
       {services.length ? (
-        <section className="px-4 pt-6">
+        <section className="px-4 pt-6 lg:px-0">
           <SectionHeading title={t("company.services")} />
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-3 space-y-2 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0 xl:grid-cols-3">
             {services.map(({ service, tenant }) => (
               <li key={service.id}>
                 <Link

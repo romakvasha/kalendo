@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Avatar } from "@/components/ui";
-import { KalendoLogo, TenantLogo } from "@/components/brand/logo";
+import { KalendoLogo } from "@/components/brand/logo";
+import { SidebarTenantSwitcher } from "./tenant-switcher";
 import { PANEL_GROUPS, iconFor, isActivePath, panelModulesInGroup } from "@/lib/nav";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ export function PanelSidebar({ tenant, account, className }: PanelSidebarProps) 
   return (
     <aside
       className={cn(
-        "sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-line bg-white lg:flex",
+        "sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-line bg-card lg:flex",
         className,
       )}
     >
@@ -34,25 +35,7 @@ export function PanelSidebar({ tenant, account, className }: PanelSidebarProps) 
       </div>
 
       <div className="px-3 pb-3">
-        <button
-          type="button"
-          className="flex w-full items-center gap-2.5 rounded-md border border-line px-2.5 py-2 text-left transition-colors hover:bg-sand-50"
-        >
-          {tenant ? <TenantLogo tenant={tenant} size="sm" /> : null}
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-[13px] font-medium text-ink">
-              {tenant?.name ?? "Kalendo"}
-            </span>
-            {tenant ? (
-              <span className="block truncate text-[11px] text-muted">
-                {tenant.locations.length > 1
-                  ? tenant.locations.map((location) => location.name).join(" · ")
-                  : tenant.city}
-              </span>
-            ) : null}
-          </span>
-          <ChevronRight className="size-4 shrink-0 text-sand-400" aria-hidden="true" />
-        </button>
+        <SidebarTenantSwitcher tenant={tenant} />
       </div>
 
       <nav
@@ -62,7 +45,7 @@ export function PanelSidebar({ tenant, account, className }: PanelSidebarProps) 
         {PANEL_GROUPS.map((group, groupIndex) => (
           <div key={group} className={groupIndex === 0 ? "" : "mt-5"}>
             {groupIndex === 0 ? null : (
-              <p className="px-2.5 pb-1.5 text-[10px] font-medium uppercase tracking-[0.1em] text-sand-400">
+              <p className="px-2.5 pb-1.5 text-[10px] font-medium uppercase tracking-[0.1em] text-muted">
                 {t(`nav.groups.${group}`)}
               </p>
             )}
@@ -125,7 +108,7 @@ export function PanelSidebar({ tenant, account, className }: PanelSidebarProps) 
             target="_blank"
             className="block rounded-md border border-line bg-sand-50 px-2.5 py-2 transition-colors hover:bg-sand-100"
           >
-            <span className="block text-[10px] font-medium uppercase tracking-[0.08em] text-sand-500">
+            <span className="block text-[10px] font-medium uppercase tracking-[0.08em] text-muted">
               {t("settings.bookingPage")}
             </span>
             <span className="mt-0.5 flex items-center gap-1.5 text-[12px] font-medium text-ink">

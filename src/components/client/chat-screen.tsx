@@ -144,17 +144,27 @@ export function ChatScreen() {
 
   if (!hydrated) return <ScreenSkeleton hero={false} rows={4} />;
 
-  if (!active) {
-    return (
-      <div className="pb-8">
+  /**
+   * Below lg this is exactly the old screen: the list, then the thread once a
+   * conversation is picked (`contents` keeps the old DOM chain). From lg up the
+   * two become panes of one messenger inside a bounded, internally scrolling box.
+   */
+  return (
+    <div className="contents lg:flex lg:h-[calc(100dvh-10rem)] lg:gap-6">
+      <div
+        className={cn(
+          "lg:flex lg:w-80 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:pb-0",
+          active ? "hidden lg:flex" : "pb-8",
+        )}
+      >
         <div className="pt-safe">
-          <h1 className="font-display px-4 pt-4 text-[30px] leading-tight text-ink">
+          <h1 className="font-display px-4 pt-4 text-[30px] leading-tight text-ink lg:px-0 lg:pt-0">
             {t("nav.chat")}
           </h1>
         </div>
 
         {threads.length ? (
-          <ul className="mt-4 space-y-2 px-4">
+          <ul className="mt-4 space-y-2 px-4 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:px-0">
             {threads.map((tenant) => {
               const next = upcoming.find((item) => item.tenantId === tenant.id);
               return (
@@ -162,8 +172,14 @@ export function ChatScreen() {
                   <BrandProvider brand={tenant.brand}>
                     <button
                       type="button"
-                      onClick={() => router.replace(`/app/chat?tenant=${tenant.id}`)}
-                      className="surface-flat flex w-full items-center gap-3 p-3 text-left transition-colors hover:bg-sand-50"
+                      aria-current={tenant.id === activeId ? "true" : undefined}
+                      onClick={() =>
+                        router.replace(`/app/chat?tenant=${tenant.id}`)
+                      }
+                      className={cn(
+                        "surface-flat flex w-full items-center gap-3 p-3 text-left transition-colors hover:bg-sand-50",
+                        tenant.id === activeId && "lg:bg-sand-50",
+                      )}
                     >
                       <TenantLogo tenant={tenant} size="lg" />
                       <span className="min-w-0 flex-1">
@@ -197,93 +213,111 @@ export function ChatScreen() {
           />
         )}
       </div>
-    );
-  }
 
-  return (
-    <BrandProvider brand={active.brand}>
-      <div className="flex min-h-full flex-col pb-4">
-        <div className="pt-safe sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur-md">
-          <div className="flex items-center gap-2 px-3 py-2.5">
-            <IconButton
-              aria-label={t("a11y.back")}
-              onClick={() => router.replace("/app/chat")}
-            >
-              <ArrowLeft />
-            </IconButton>
-            <TenantLogo tenant={active} size="sm" />
-            <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-ink">
-              {active.name}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex-1 space-y-2 px-4 pt-4">
-          <Divider label={t("common.today")} className="pb-2" />
-
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={cn(
-                "flex",
-                message.from === "client" ? "justify-end" : "justify-start",
-              )}
-            >
-              <div
-                className={cn(
-                  "max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[14px] leading-5",
-                  message.from === "client"
-                    ? "rounded-br-sm bg-ink text-paper"
-                    : "rounded-bl-sm border border-line bg-white text-ink",
-                )}
-              >
-                <p>{message.text}</p>
-                <p
-                  className={cn(
-                    "tabular mt-1 text-[10px]",
-                    message.from === "client" ? "text-paper/50" : "text-muted",
-                  )}
-                >
-                  {timeOf(message.at)}
-                </p>
+      <div
+        className={cn(
+          "lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:overflow-hidden",
+          active ? "contents lg:flex" : "hidden lg:flex",
+        )}
+      >
+        {active ? (
+          <BrandProvider brand={active.brand}>
+            <div className="flex min-h-full flex-col pb-4 lg:min-h-0 lg:flex-1 lg:overflow-hidden lg:pb-0">
+              <div className="pt-safe sticky top-0 z-20 border-b border-line bg-paper/95 backdrop-blur-md lg:static lg:shrink-0">
+                <div className="flex items-center gap-2 px-3 py-2.5 lg:px-0">
+                  <IconButton
+                    aria-label={t("a11y.back")}
+                    className="lg:hidden"
+                    onClick={() => router.replace("/app/chat")}
+                  >
+                    <ArrowLeft />
+                  </IconButton>
+                  <TenantLogo tenant={active} size="sm" />
+                  <span className="min-w-0 flex-1 truncate text-[15px] font-medium text-ink">
+                    {active.name}
+                  </span>
+                </div>
               </div>
+
+              <div className="flex-1 space-y-2 px-4 pt-4 lg:min-h-0 lg:overflow-y-auto lg:px-0">
+                <Divider label={t("common.today")} className="pb-2" />
+
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={cn(
+                      "flex",
+                      message.from === "client"
+                        ? "justify-end"
+                        : "justify-start",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[14px] leading-5",
+                        message.from === "client"
+                          ? "rounded-br-sm bg-ink text-paper"
+                          : "rounded-bl-sm border border-line bg-card text-ink",
+                      )}
+                    >
+                      <p>{message.text}</p>
+                      <p
+                        className={cn(
+                          "tabular mt-1 text-[10px]",
+                          message.from === "client"
+                            ? "text-paper/50"
+                            : "text-muted",
+                        )}
+                      >
+                        {timeOf(message.at)}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                <div ref={endRef} />
+              </div>
+
+              <ChipRow className="mt-4 px-4 lg:shrink-0 lg:px-0">
+                {QUICK_REPLIES.map((key) => (
+                  <Chip key={key} onClick={() => send(t(`chat.quick.${key}`))}>
+                    {t(`chat.quick.${key}`)}
+                  </Chip>
+                ))}
+              </ChipRow>
+
+              <form
+                className="mt-3 flex items-center gap-2 px-4 lg:shrink-0 lg:px-0"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  send(draft);
+                }}
+              >
+                <Input
+                  value={draft}
+                  aria-label={t("chat.placeholder")}
+                  placeholder={t("chat.placeholder")}
+                  onChange={(event) => setDraft(event.target.value)}
+                />
+                <IconButton
+                  type="submit"
+                  variant="brand"
+                  aria-label={t("common.send")}
+                  disabled={!draft.trim()}
+                >
+                  <SendHorizontal />
+                </IconButton>
+              </form>
             </div>
-          ))}
-
-          <div ref={endRef} />
-        </div>
-
-        <ChipRow className="mt-4 px-4">
-          {QUICK_REPLIES.map((key) => (
-            <Chip key={key} onClick={() => send(t(`chat.quick.${key}`))}>
-              {t(`chat.quick.${key}`)}
-            </Chip>
-          ))}
-        </ChipRow>
-
-        <form
-          className="mt-3 flex items-center gap-2 px-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            send(draft);
-          }}
-        >
-          <Input
-            value={draft}
-            aria-label={t("chat.placeholder")}
-            placeholder={t("chat.placeholder")}
-            onChange={(event) => setDraft(event.target.value)}
+          </BrandProvider>
+        ) : (
+          <EmptyState
+            className="lg:flex-1"
+            icon={MessageCircle}
+            title={t("chat.placeholder")}
           />
-          <IconButton
-            type="submit"
-            variant="brand"
-            aria-label={t("common.send")}
-            disabled={!draft.trim()}
-          >
-            <SendHorizontal />
-          </IconButton>
-        </form>
+        )}
       </div>
-    </BrandProvider>
+    </div>
   );
 }
